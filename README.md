@@ -14,13 +14,27 @@ assets/favicon.svg  # 파비콘
 QUESTIONS.md        # 재제작 관련 미결 질문 (답변 후 정리)
 ```
 
-## 수정 방법
+## 브랜치 전략 (dev / prod 분리)
 
-1. `index.html`에서 텍스트 수정 (섹션별 주석 `<!-- ===== Hero ===== -->` 참고)
+| 브랜치 | 역할 | 반영되는 곳 |
+|---|---|---|
+| `dev` | 개발·수정 작업은 항상 여기서 | 미리보기 URL (아래) |
+| `main` | **prod** — 머지하는 순간 라이브 배포 | https://sslee0000.github.io |
+
+## 수정 워크플로
+
+1. `git checkout dev` 상태에서 `index.html` 등 수정 (섹션별 주석 `<!-- ===== Hero ===== -->` 참고)
 2. `git add -A && git commit -m "..." && git push`
-3. 1~2분 내 https://sslee0000.github.io 반영
+3. **미리보기로 확인** (둘 중 편한 것):
+   - 로컬: `python3 -m http.server 8000` → http://localhost:8000
+   - 원격(폰/외부에서 확인 가능): https://raw.githack.com/sslee0000/sslee0000.github.io/dev/index.html
+4. 확인 후 라이브 반영:
+   ```bash
+   git checkout main && git merge dev && git push && git checkout dev
+   ```
+5. 1~2분 내 https://sslee0000.github.io 반영
 
-로컬 미리보기: `python3 -m http.server 8000` 후 http://localhost:8000
+> 원격 미리보기는 [raw.githack.com](https://raw.githack.com)이 dev 브랜치 파일을 그대로 렌더링해주는 방식 (무설정·무료). dev URL은 캐시가 없어 push 직후 바로 갱신됨. 미리보기일 뿐 검색엔진에 노출되는 정식 사이트는 아님.
 
 ## 이전 사이트
 
