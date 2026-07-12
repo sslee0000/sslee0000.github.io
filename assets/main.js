@@ -15,10 +15,30 @@
   });
 })();
 
-// Scroll reveal — subtle fade-up on sections/cards; no-op if IntersectionObserver missing.
+// Language toggle — Korean by default; English via data-lang="en".
+// Initial language is applied inline in <head> to avoid flash.
+(function () {
+  var btn = document.getElementById("lang-toggle");
+  if (!btn) return;
+  btn.addEventListener("click", function () {
+    var root = document.documentElement;
+    var en = root.dataset.lang === "en";
+    if (en) {
+      delete root.dataset.lang;
+      root.lang = "ko";
+      localStorage.setItem("lang", "ko");
+    } else {
+      root.dataset.lang = "en";
+      root.lang = "en";
+      localStorage.setItem("lang", "en");
+    }
+  });
+})();
+
+// Scroll reveal — subtle fade-up; no-op if IntersectionObserver missing.
 (function () {
   if (!("IntersectionObserver" in window)) return;
-  var targets = document.querySelectorAll(".section h2, .card, .timeline > li, .pubs li, .about-text, .about-facts");
+  var targets = document.querySelectorAll(".card, .entry-card, .cv-section, .pubs li");
   var io = new IntersectionObserver(
     function (entries) {
       entries.forEach(function (e) {
@@ -28,7 +48,7 @@
         }
       });
     },
-    { threshold: 0.12 }
+    { threshold: 0.1 }
   );
   targets.forEach(function (t) {
     t.classList.add("reveal");

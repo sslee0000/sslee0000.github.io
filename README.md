@@ -5,14 +5,29 @@
 ## 구조 (프레임워크 없음 — 빌드 불필요)
 
 ```
-index.html          # 페이지 전체 (콘텐츠 수정은 여기)
+index.html          # 랜딩: 사진·한 줄 소개·CV/Portfolio 입구
+cv.html             # CV: 학력·경력·논문·스킬 + PDF 다운로드
+portfolio.html      # Portfolio: 프로젝트 카드
 assets/style.css    # 디자인 (다크/라이트 테마, 반응형)
-assets/main.js      # 테마 토글 + 스크롤 애니메이션 (최소한)
+assets/main.js      # 테마 토글 + 한/영 토글 + 스크롤 애니메이션
 assets/favicon.svg  # 파비콘
+files/Seungsu_Lee_CV.pdf  # 웹 공개용 CV (전화번호 제거판 — Seungsu_CV repo의 make_web_cv.sh로 생성)
+images/             # 프로필·프로젝트 이미지 (예정)
 404.html            # 404 페이지
 .nojekyll           # GitHub Pages의 Jekyll 처리 비활성화
-QUESTIONS.md        # 재제작 관련 미결 질문 (답변 후 정리)
+QUESTIONS.md        # 미결 질문 (답변 후 정리)
 ```
+
+## 한/영 토글 (기본: 한글)
+
+같은 자리에 두 언어를 나란히 쓰고 CSS로 하나만 보여주는 방식:
+
+```html
+<span class="ko">시스템 소프트웨어 엔지니어</span><span class="en">System Software Engineer</span>
+```
+
+- 텍스트 수정 시 **ko/en 두 span을 함께** 고칠 것 (블록 단위는 `<ul class="ko">` / `<ul class="en">` 쌍)
+- 우상단 `EN`/`KO` 버튼으로 전환, localStorage에 저장됨
 
 ## 브랜치 전략 (dev / prod 분리)
 
@@ -23,7 +38,7 @@ QUESTIONS.md        # 재제작 관련 미결 질문 (답변 후 정리)
 
 ## 수정 워크플로
 
-1. `git checkout dev` 상태에서 `index.html` 등 수정 (섹션별 주석 `<!-- ===== Hero ===== -->` 참고)
+1. `git checkout dev` 상태에서 수정
 2. `git add -A && git commit -m "..." && git push`
 3. **미리보기로 확인** (둘 중 편한 것):
    - 로컬: `python3 -m http.server 8000` → http://localhost:8000

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CV — Seungsu Lee</title>
+  <meta name="description" content="이승수 CV — 학력, 경력, 논문, 스킬.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <script>
+    (function () {
+      var t = localStorage.getItem("theme");
+      if (t === "light" || (!t && window.matchMedia("(prefers-color-scheme: light)").matches)) {
+        document.documentElement.dataset.theme = "light";
+      }
+      if (localStorage.getItem("lang") === "en") {
+        document.documentElement.dataset.lang = "en";
+        document.documentElement.lang = "en";
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<header class="nav">
+  <nav class="container nav-inner" aria-label="Primary">
+    <a class="brand" href="./"><span class="brand-mark">~/</span>seungsu.lee</a>
+    <div class="nav-links">
+      <a href="cv.html" class="active" aria-current="page">CV</a>
+      <a href="portfolio.html">Portfolio</a>
+    </div>
+    <button id="lang-toggle" aria-label="Switch language" title="한국어 / English">
+      <span class="ko mono">EN</span><span class="en mono">KO</span>
+    </button>
+    <button id="theme-toggle" aria-label="Toggle color theme" title="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.5 4.5l2 2M17.5 17.5l2 2M19.5 4.5l-2 2M6.5 17.5l-2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+    </button>
+  </nav>
+</header>
+
+<main class="page">
+  <div class="container">
+
+    <div class="page-head">
+      <h1>CV</h1>
+      <a class="btn btn-primary" href="files/Seungsu_Lee_CV.pdf" target="_blank">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="ko">CV PDF 다운로드</span><span class="en">Download CV (PDF)</span>
+      </a>
+    </div>
+    <p class="page-note">
+      <span class="ko">아래는 요약본입니다. 상세 내용은 PDF를 확인해 주세요.</span>
+      <span class="en">This is a summary — see the PDF for full details.</span>
+    </p>
+
+    <!-- ================= Education ================= -->
+    <section class="cv-section">
+      <h2><span class="ko">학력</span><span class="en">Education</span></h2>
+      <ul class="cv-list">
+        <li>
+          <div class="cv-main">
+            <h3><span class="ko">서울대학교</span><span class="en">Seoul National University</span></h3>
+            <p class="cv-sub"><span class="ko">컴퓨터공학 석사</span><span class="en">M.S. in Computer Science and Engineering</span></p>
+            <p class="cv-detail">
+              <span class="ko">학위논문: </span><span class="en">Thesis: </span><em>Real-time System Optimization of DAG Task Model Considering Applicability</em>
+            </p>
+          </div>
+          <span class="cv-date mono">2019.03 – 2021.02</span>
+        </li>
+        <li>
+          <div class="cv-main">
+            <h3><span class="ko">고려대학교</span><span class="en">Korea University</span></h3>
+            <p class="cv-sub"><span class="ko">전기전자공학 학사</span><span class="en">B.E. in Electrical Engineering</span></p>
+          </div>
+          <span class="cv-date mono">2013.03 – 2019.02</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ================= Experience ================= -->
+    <section class="cv-section">
+      <h2><span class="ko">경력</span><span class="en">Experience</span></h2>
+      <ul class="cv-list">
+        <li>
+          <div class="cv-main">
+            <h3><span class="ko">네이버랩스</span><span class="en">Naver Labs</span></h3>
+            <p class="cv-sub"><span class="ko">소프트웨어 엔지니어</span><span class="en">Software Engineer</span></p>
+            <ul class="cv-bullets ko">
+              <li>자율주행 셔틀·거리뷰 데이터 수집 차량의 시스템 소프트웨어 개발 — 디바이스 드라이버, 차량 내 네트워크, 릴리스 관리, 장애 근본원인 분석</li>
+              <li>거리뷰 차량을 표준 Ubuntu에서 커스텀 Yocto OS(read-only rootfs, A/B 이중화)로 전환하고 시스템 계층을 리팩터링, 상태기계 재설계로 초기화 시간 약 44% 단축</li>
+              <li>배달 로봇 등 타 프로젝트용 멀티보드(NVIDIA Orin 등) Yocto OS 구축 및 카메라 드라이버 이식</li>
+            </ul>
+            <ul class="cv-bullets en">
+              <li>System software for an autonomous shuttle and a street-view mapping vehicle — device drivers, in-vehicle networking, release engineering, field root-cause analysis</li>
+              <li>Migrated the mapping vehicle from stock Ubuntu to a custom Yocto OS (read-only rootfs, A/B redundancy) with system-layer refactoring; state-machine redesign cut startup time by ~44%</li>
+              <li>Built Yocto OS images for multiple boards (e.g., NVIDIA Orin) and ported kernel-level camera drivers for robot projects</li>
+            </ul>
+          </div>
+          <span class="cv-date mono">2022.04 –<span class="ko"> 현재</span><span class="en"> Present</span></span>
+        </li>
+        <li>
+          <div class="cv-main">
+            <h3><span class="ko">삼성전자 DS부문</span><span class="en">Samsung Electronics, Device Solutions</span></h3>
+            <p class="cv-sub"><span class="ko">엔지니어 (Custom SoC Platform)</span><span class="en">Engineer, Custom SoC Platform</span></p>
+            <ul class="cv-bullets ko">
+              <li>차량용 Exynos SoC 시스템 소프트웨어 — PCIe Gen4→Gen5 전환 시점의 디바이스 드라이버 담당</li>
+            </ul>
+            <ul class="cv-bullets en">
+              <li>Automotive Exynos SoC system software — owned the PCIe device driver through the Gen4 → Gen5 transition</li>
+            </ul>
+          </div>
+          <span class="cv-date mono">2021.02 – 2022.03</span>
+        </li>
+        <li>
+          <div class="cv-main">
+            <h3><span class="ko">서울대 실시간 유비쿼터스 시스템 연구실</span><span class="en">Real-Time Ubiquitous Systems Lab, SNU</span></h3>
+            <p class="cv-sub"><span class="ko">석사과정 연구원</span><span class="en">Graduate Researcher (M.S.)</span></p>
+            <ul class="cv-bullets ko">
+              <li>실시간 스케줄링 연구 — 임베디드 보드 위 자율주행 워크로드 프로파일링·모델링·최적화</li>
+            </ul>
+            <ul class="cv-bullets en">
+              <li>Real-time scheduling research — profiling, modeling, and optimizing autonomous-driving workloads on embedded boards</li>
+            </ul>
+          </div>
+          <span class="cv-date mono">2019.01 – 2021.02</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ================= Publications ================= -->
+    <section class="cv-section">
+      <h2><span class="ko">논문</span><span class="en">Publications</span></h2>
+      <ul class="pubs">
+        <li>
+          <span class="pub-venue mono">IEEE TC 2021</span>
+          <div>
+            <p class="pub-title">Optimal Parallelization of Single/Multi-Segment Real-Time Tasks for Global EDF</p>
+            <p class="pub-authors">Youngeun Cho, Do Hyung Kim, Daechul Park, <strong>Seungsu Lee</strong>, Chang-Gun Lee — <em>IEEE Transactions on Computers</em></p>
+          </div>
+        </li>
+        <li>
+          <span class="pub-venue mono">RTSS 2019</span>
+          <div>
+            <p class="pub-title">Conditionally Optimal Task Parallelization for Global EDF on Multi-core Systems</p>
+            <p class="pub-authors">Youngeun Cho, Do Hyung Kim, Daechul Park, <strong>Seungsu Lee</strong>, Chang-Gun Lee — <em>IEEE Real-Time Systems Symposium</em></p>
+          </div>
+        </li>
+        <li>
+          <span class="pub-venue mono"><span class="ko">국내</span><span class="en">Domestic</span></span>
+          <div>
+            <p class="pub-title">Necessary Bound of Resource Utilization for Fail-Safe Execution of ROS Task <span class="pub-note"><span class="ko">(1저자, KCC 2019)</span><span class="en">(first author, KCC 2019)</span></span></p>
+            <p class="pub-authors">+ HSFS: Heterogeneous Superiority-First Scheduling for DAG Task (KSC 2020) · A Precise Module Execution Time Measurement of ROS Network (KCC 2020)</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ================= Skills ================= -->
+    <section class="cv-section">
+      <h2><span class="ko">스킬</span><span class="en">Skills</span></h2>
+      <div class="skills">
+        <div class="skill-row"><span class="skill-cat mono"><span class="ko">언어</span><span class="en">languages</span></span><p><span>C/C++</span><span>Python</span><span>Shell</span></p></div>
+        <div class="skill-row"><span class="skill-cat mono"><span class="ko">시스템</span><span class="en">systems</span></span><p><span>Linux</span><span>Yocto</span><span>Docker</span><span>ROS / Autoware</span><span>PREEMPT_RT</span><span>A/B OTA</span></p></div>
+        <div class="skill-row"><span class="skill-cat mono"><span class="ko">프로파일링</span><span class="en">profiling</span></span><p><span>perf</span><span>ftrace</span><span>kernelshark</span><span>Wireshark</span><span>rtla / cyclictest</span></p></div>
+        <div class="skill-row"><span class="skill-cat mono"><span class="ko">워크플로</span><span class="en">workflow</span></span><p><span>Git</span><span>Jenkins</span><span>Gerrit</span><span>LaTeX</span><span class="ko">AI 활용 개발</span><span class="en">AI-assisted development</span></p></div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-contacts">
+      <a href="mailto:soulist77@gmail.com">soulist77@gmail.com</a>
+      <a href="https://github.com/sslee0000" rel="me noopener" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/seung-su-lee-a69827169/" rel="me noopener" target="_blank">LinkedIn</a>
+    </div>
+    <p class="footer-note">© 2026 Seungsu Lee</p>
+  </div>
+</footer>
+
+<script src="assets/main.js" defer></script>
+</body>
+</html>

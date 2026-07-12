@@ -1,22 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Seungsu Lee — System Software Engineer</title>
-  <meta name="description" content="Seungsu Lee — system software engineer building embedded Linux platforms, real-time systems, and autonomous machines that reach real service.">
+  <meta name="description" content="이승수 — 자율주행 셔틀, 거리뷰 차량, 로봇의 시스템 소프트웨어를 만드는 엔지니어. Embedded Linux · Real-Time Systems · Yocto.">
   <meta property="og:title" content="Seungsu Lee — System Software Engineer">
-  <meta property="og:description" content="Embedded Linux platforms · real-time systems · autonomous machines, from prototype to service.">
+  <meta property="og:description" content="Embedded Linux · Real-Time Systems · Yocto — from prototype to service.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://sslee0000.github.io/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
   <script>
-    // Apply saved theme before first paint to avoid flash
+    // Apply saved theme/language before first paint
     (function () {
       var t = localStorage.getItem("theme");
       if (t === "light" || (!t && window.matchMedia("(prefers-color-scheme: light)").matches)) {
         document.documentElement.dataset.theme = "light";
+      }
+      if (localStorage.getItem("lang") === "en") {
+        document.documentElement.dataset.lang = "en";
+        document.documentElement.lang = "en";
       }
     })();
   </script>
@@ -25,14 +29,14 @@
 
 <header class="nav">
   <nav class="container nav-inner" aria-label="Primary">
-    <a class="brand" href="#top"><span class="brand-mark">~/</span>seungsu.lee</a>
+    <a class="brand" href="./"><span class="brand-mark">~/</span>seungsu.lee</a>
     <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#publications">Publications</a>
-      <a href="#skills">Skills</a>
+      <a href="cv.html">CV</a>
+      <a href="portfolio.html">Portfolio</a>
     </div>
+    <button id="lang-toggle" aria-label="Switch language" title="한국어 / English">
+      <span class="ko mono">EN</span><span class="en mono">KO</span>
+    </button>
     <button id="theme-toggle" aria-label="Toggle color theme" title="Toggle theme">
       <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.5 4.5l2 2M17.5 17.5l2 2M19.5 4.5l-2 2M6.5 17.5l-2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
@@ -40,242 +44,72 @@
   </nav>
 </header>
 
-<main id="top">
-
+<main>
   <!-- ================= Hero ================= -->
-  <section class="hero">
-    <div class="container">
-      <p class="eyebrow mono">// system software engineer</p>
-      <h1>Seungsu&nbsp;Lee</h1>
-      <p class="tagline">
-        I build the system software that takes real machines —
-        autonomous vehicles, mapping platforms, robots —
-        <strong>from prototype to service</strong>.
-      </p>
-      <ul class="hero-meta">
-        <li>Software Engineer @ <strong>Naver Labs</strong></li>
-        <li>Embedded Linux · Real-Time Systems · Yocto</li>
-        <li>Seoul, Korea</li>
-      </ul>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="mailto:soulist77@gmail.com">
-          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M3 5h18v14H3z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m3 6 9 7 9-7" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-          Contact
-        </a>
-        <a class="btn" href="https://github.com/sslee0000" rel="me noopener" target="_blank">
-          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-          GitHub
-        </a>
-        <a class="btn" href="https://www.linkedin.com/in/seung-su-lee-a69827169/" rel="me noopener" target="_blank">
-          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.24 8h4.52v14.5H.24V8zm7.44 0h4.34v1.98h.06c.6-1.14 2.08-2.34 4.28-2.34 4.58 0 5.42 3.01 5.42 6.92v7.94h-4.52v-7.04c0-1.68-.03-3.84-2.34-3.84-2.34 0-2.7 1.83-2.7 3.72v7.16H7.68V8z"/></svg>
-          LinkedIn
-        </a>
+  <section class="hero hero-landing">
+    <div class="container hero-grid">
+      <div class="avatar" aria-hidden="true">
+        <!-- 프로필 사진이 준비되면 아래 div를 <img src="images/profile.jpg" alt=""> 로 교체 -->
+        <div class="avatar-fallback mono">~/</div>
+      </div>
+      <div>
+        <p class="eyebrow mono">// system software engineer</p>
+        <h1><span class="ko">이승수</span><span class="en">Seungsu&nbsp;Lee</span></h1>
+        <p class="tagline">
+          <span class="ko">실제 기계를 <strong>프로토타입에서 서비스까지</strong> 끌어올리는 시스템 소프트웨어 엔지니어입니다.<br>자율주행 셔틀, 거리뷰 차량, 로봇의 리눅스 플랫폼을 만듭니다.</span>
+          <span class="en">A system software engineer taking real machines — autonomous shuttles, mapping vehicles, robots — <strong>from prototype to service</strong>.</span>
+        </p>
+        <ul class="hero-meta">
+          <li><span class="ko">네이버랩스 소프트웨어 엔지니어</span><span class="en">Software Engineer @ Naver Labs</span></li>
+          <li>Embedded Linux · Real-Time Systems · Yocto</li>
+          <li>Seoul, Korea</li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- ================= About ================= -->
-  <section id="about" class="section">
+  <!-- ================= Entry cards ================= -->
+  <section class="section section-entry">
     <div class="container">
-      <h2><span class="mono section-index">01.</span> About</h2>
-      <div class="about-grid">
-        <div class="about-text">
-          <p>
-            I'm a system software engineer at <strong>Naver Labs</strong>, where physical machines meet software.
-            For the last few years I've owned the vehicle-side software of an autonomous shuttle and worked on the
-            platform of a street-view mapping vehicle — device drivers, in-vehicle networks, custom Yocto OS
-            images with read-only rootfs and A/B redundancy, release engineering, and the on-vehicle debugging
-            that makes a prototype survive real service.
-          </p>
-          <p>
-            Before that, I worked on automotive SoC system software at <strong>Samsung Electronics (DS Division)</strong>,
-            and earned an M.S. in Computer Science researching <strong>real-time scheduling</strong> —
-            profiling autonomous-driving workloads on embedded boards and turning the fixes into a method
-            anyone can apply with stock Linux tools.
-          </p>
-          <p>
-            I care about two things: <strong>measuring before optimizing</strong>, and finishing systems to the
-            level where they quietly just work. Lately I'm deep in PREEMPT_RT and real-time Linux, and I lean
-            hard on AI tools to move faster from spec to verified system.
-          </p>
-        </div>
-        <dl class="about-facts">
-          <div><dt class="mono">education</dt><dd>M.S. CSE, Seoul National University<br>B.E. EE, Korea University</dd></div>
-          <div><dt class="mono">research</dt><dd>Real-time scheduling · DAG task models · Workload profiling</dd></div>
-          <div><dt class="mono">currently</dt><dd>PREEMPT_RT · next-gen vehicle platforms</dd></div>
-        </dl>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= Experience ================= -->
-  <section id="experience" class="section">
-    <div class="container">
-      <h2><span class="mono section-index">02.</span> Experience</h2>
-      <ol class="timeline">
-        <li>
-          <div class="tl-head">
-            <h3>Naver Labs</h3>
-            <span class="tl-role">Software Engineer</span>
-            <span class="tl-date mono">Apr 2022 — Present</span>
-          </div>
-          <ul class="tl-bullets">
-            <li>Migrated the street-view mapping vehicle from stock Ubuntu to a custom <strong>Yocto</strong> OS image (read-only rootfs, A/B redundancy), refactoring the system layers end-to-end.</li>
-            <li>Redesigned the vehicle-control orchestrator as an explicit state machine — <strong>~44% faster startup</strong> — and hardened it through on-vehicle validation and security work.</li>
-            <li>Built vehicle control / sensor / UI device drivers for an autonomous shuttle and designed its in-vehicle network.</li>
-            <li>Formalized the team's release process (versioning, branching) and traced field failures to root cause across storage, network, and application layers.</li>
-            <li>Ported Yocto OS images and kernel-level camera drivers to multiple boards (e.g., NVIDIA Orin) for robot projects.</li>
-          </ul>
-        </li>
-        <li>
-          <div class="tl-head">
-            <h3>Samsung Electronics — Device Solutions</h3>
-            <span class="tl-role">Engineer, Custom SoC Platform</span>
-            <span class="tl-date mono">Feb 2021 — Mar 2022</span>
-          </div>
-          <ul class="tl-bullets">
-            <li>Automotive Exynos SoC system software: owned the <strong>PCIe device driver</strong> through the Gen4 → Gen5 transition.</li>
-            <li>Worked across the SoC bring-up pipeline — Yocto builds, OS bring-up (Linux/Android/QNX), Trace32/RAMDUMP debugging, Jenkins-based QA automation.</li>
-          </ul>
-        </li>
-        <li>
-          <div class="tl-head">
-            <h3>Real-Time Ubiquitous Systems Lab, SNU</h3>
-            <span class="tl-role">Graduate Researcher (M.S.)</span>
-            <span class="tl-date mono">Jan 2019 — Feb 2021</span>
-          </div>
-          <ul class="tl-bullets">
-            <li>Thesis: <em>Real-time System Optimization of DAG Task Model Considering Applicability</em> — cutting autonomous-driving response time with nothing but stock Linux scheduling tools.</li>
-            <li>Co-authored optimal task-parallelization research published at <strong>IEEE RTSS 2019</strong> and in <strong>IEEE Transactions on Computers</strong>.</li>
-          </ul>
-        </li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- ================= Projects ================= -->
-  <section id="projects" class="section">
-    <div class="container">
-      <h2><span class="mono section-index">03.</span> Selected Projects</h2>
-      <div class="cards">
-
-        <article class="card">
+      <div class="entry-cards">
+        <a class="entry-card" href="cv.html">
           <div class="card-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="26" height="26"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M3 17h2m0 0a2.5 2.5 0 1 0 5 0m-5 0a2.5 2.5 0 1 1 5 0m0 0h4m0 0a2.5 2.5 0 1 0 5 0m-5 0a2.5 2.5 0 1 1 5 0m2 0h1v-4l-3-5H6L3 13v4z"/><circle cx="12" cy="7" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+            <svg viewBox="0 0 24 24" width="26" height="26"><path d="M7 3h7l5 5v13H7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5M10 12h6M10 15.5h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
           </div>
-          <h3>Street-View Mapping Vehicle Platform</h3>
-          <p>
-            Took a mapping data-collection vehicle from stock Ubuntu to a purpose-built Yocto OS —
-            read-only rootfs, A/B update redundancy, a state-machine control core with ~44% faster startup —
-            and drove it through real-vehicle validation to service quality.
-          </p>
-          <p class="tags"><span>Yocto</span><span>A/B OTA</span><span>State Machine</span><span>Embedded Linux</span></p>
-        </article>
-
-        <article class="card">
-          <div class="card-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="26" height="26"><rect x="4" y="5" width="16" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 19h8M12 15v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8 9.5h4M8 12h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          </div>
-          <h3>Autonomous Shuttle System Software</h3>
-          <p>
-            Vehicle control, sensor, and UI device drivers for a self-driving shuttle in daily operation —
-            plus the in-vehicle network design, hardware integration, and the monthly release train
-            that kept it all shippable.
-          </p>
-          <p class="tags"><span>Device Drivers</span><span>CAN</span><span>Networking</span><span>Release Eng.</span></p>
-        </article>
-
-        <article class="card">
-          <div class="card-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="26" height="26"><path d="M4 19V9m5.5 10V5m5.5 14v-8m5-6v14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          </div>
-          <h3>Real-Time Optimization of Autonomous Driving Workloads</h3>
-          <p>
-            M.S. thesis. Profiled an Autoware stack on a Jetson TX2 with perf/kernelshark, modeled it as a DAG,
-            and built a 3-step heuristic using only stock Linux knobs (policy, affinity, priority).
-            Default CFS missed deadlines and crashed the run; the method met every deadline and drove.
-          </p>
-          <p class="tags"><span>PREEMPT_RT</span><span>perf</span><span>ROS/Autoware</span><span>Scheduling</span></p>
-        </article>
-
-        <article class="card">
+          <h2>CV</h2>
+          <p><span class="ko">학력 · 경력 · 논문 · 스킬을 한눈에</span><span class="en">Education, experience, publications &amp; skills</span></p>
+          <span class="entry-go mono">→</span>
+        </a>
+        <a class="entry-card" href="portfolio.html">
           <div class="card-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="26" height="26"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
           </div>
-          <h3>Optimal Task Parallelization for Global EDF</h3>
-          <p>
-            Research on conditionally optimal parallelization of real-time tasks with parallelization freedom —
-            up to 60% schedulability gains, validated on PREEMPT_RT with real autonomous-driving programs.
-            Published at RTSS 2019 and in IEEE Transactions on Computers.
-          </p>
-          <p class="tags"><span>Real-Time</span><span>G-EDF</span><span>Multicore</span><span>Simulation</span></p>
-        </article>
-
+          <h2>Portfolio</h2>
+          <p><span class="ko">직접 만든 시스템과 연구 프로젝트</span><span class="en">Systems I've built and research projects</span></p>
+          <span class="entry-go mono">→</span>
+        </a>
       </div>
     </div>
   </section>
-
-  <!-- ================= Publications ================= -->
-  <section id="publications" class="section">
-    <div class="container">
-      <h2><span class="mono section-index">04.</span> Publications</h2>
-      <ul class="pubs">
-        <li>
-          <span class="pub-venue mono">IEEE TC 2021</span>
-          <div>
-            <p class="pub-title">Optimal Parallelization of Single/Multi-Segment Real-Time Tasks for Global EDF</p>
-            <p class="pub-authors">Youngeun Cho, Do Hyung Kim, Daechul Park, <strong>Seungsu Lee</strong>, Chang-Gun Lee — <em>IEEE Transactions on Computers</em></p>
-          </div>
-        </li>
-        <li>
-          <span class="pub-venue mono">RTSS 2019</span>
-          <div>
-            <p class="pub-title">Conditionally Optimal Task Parallelization for Global EDF on Multi-core Systems</p>
-            <p class="pub-authors">Youngeun Cho, Do Hyung Kim, Daechul Park, <strong>Seungsu Lee</strong>, Chang-Gun Lee — <em>IEEE Real-Time Systems Symposium</em></p>
-          </div>
-        </li>
-        <li>
-          <span class="pub-venue mono">Domestic</span>
-          <div>
-            <p class="pub-title">Necessary Bound of Resource Utilization for Fail-Safe Execution of ROS Task <span class="pub-note">(first author, KCC 2019)</span></p>
-            <p class="pub-authors">+ HSFS: Heterogeneous Superiority-First Scheduling for DAG Task (KSC 2020) · A Precise Module Execution Time Measurement of ROS Network (KCC 2020)</p>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- ================= Skills ================= -->
-  <section id="skills" class="section">
-    <div class="container">
-      <h2><span class="mono section-index">05.</span> Skills</h2>
-      <div class="skills">
-        <div class="skill-row"><span class="skill-cat mono">languages</span><p><span>C/C++</span><span>Python</span><span>Shell</span></p></div>
-        <div class="skill-row"><span class="skill-cat mono">systems</span><p><span>Linux</span><span>Yocto</span><span>Docker</span><span>ROS / Autoware</span><span>PREEMPT_RT</span><span>A/B OTA</span></p></div>
-        <div class="skill-row"><span class="skill-cat mono">profiling</span><p><span>perf</span><span>ftrace</span><span>kernelshark</span><span>Wireshark</span><span>rtla / cyclictest</span></p></div>
-        <div class="skill-row"><span class="skill-cat mono">workflow</span><p><span>Git</span><span>Jenkins</span><span>Gerrit</span><span>LaTeX</span><span>AI-assisted development</span></p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= Contact ================= -->
-  <section id="contact" class="section section-contact">
-    <div class="container">
-      <h2 class="contact-title">Get in touch</h2>
-      <p class="contact-copy">
-        Whether it's real-time systems, embedded platforms, or getting a machine from lab to street —
-        I'm happy to talk.
-      </p>
-      <a class="btn btn-primary btn-lg" href="mailto:soulist77@gmail.com">soulist77@gmail.com</a>
-    </div>
-  </section>
-
 </main>
 
 <footer class="footer">
-  <div class="container footer-inner">
-    <p>© 2026 Seungsu Lee · Built with plain HTML/CSS — no framework needed.</p>
-    <p class="mono">last update: 2026-07</p>
+  <div class="container">
+    <div class="footer-contacts">
+      <a href="mailto:soulist77@gmail.com">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M3 5h18v14H3z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m3 6 9 7 9-7" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        soulist77@gmail.com
+      </a>
+      <a href="https://github.com/sslee0000" rel="me noopener" target="_blank">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+      <a href="https://www.linkedin.com/in/seung-su-lee-a69827169/" rel="me noopener" target="_blank">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.24 8h4.52v14.5H.24V8zm7.44 0h4.34v1.98h.06c.6-1.14 2.08-2.34 4.28-2.34 4.58 0 5.42 3.01 5.42 6.92v7.94h-4.52v-7.04c0-1.68-.03-3.84-2.34-3.84-2.34 0-2.7 1.83-2.7 3.72v7.16H7.68V8z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+    <p class="footer-note">© 2026 Seungsu Lee · <span class="mono">built with plain HTML/CSS</span></p>
   </div>
 </footer>
 
