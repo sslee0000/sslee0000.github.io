@@ -3,13 +3,17 @@
 ## 사용자 액션 대기
 
 1. **프로필 사진** (넣기로 결정됨): 사진 파일을 `images/profile.jpg` 로 넣어주시면 랜딩의 아바타 자리에 반영합니다. 그 전까지는 `~/` 이니셜 아바타.
+나중에 넣을게. 일단 현상 유지. 
 2. **프로젝트 이미지 4장** (석사 시절 Drive의 요약 그림): `images/projects/` 에 넣어주시면 Portfolio 카드에 삽입 → CV의 Drive 링크도 홈페이지 링크로 교체 가능 (Drive 의존 제거).
+나중에 넣을게. 일단 현상 유지
 3. **LinkedIn URL 확인**: `linkedin.com/in/seung-su-lee-a69827169` (CV에서 가져옴) — 맞나요?
-
+https://www.linkedin.com/in/seungsu-lee-a69827169/
 ## 질문 (답변 필요)
 
 4. **Publications DOI 링크**: RTSS/TC 논문에 IEEE Xplore 링크를 달까요? DOI를 주시거나, 제가 검색해서 달 수도 있습니다.
+검색해서 달아줘.
 5. **이메일 공개**: soulist77@gmail.com이 랜딩·CV·Portfolio 푸터에 노출됩니다 (mailto). 스팸 우려 시 폼 서비스로 교체 가능. 이대로 OK?
+메일 노출은 괜찮아. 
 6. **404 페이지 유머**: "Segmentation fault (core dumped)" — 과하면 말씀 주세요.
 
 ## 결정된 것 (기록)
