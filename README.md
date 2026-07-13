@@ -11,7 +11,7 @@ portfolio.html      # Portfolio: 프로젝트 카드
 assets/style.css    # 디자인 (다크/라이트 테마, 반응형)
 assets/main.js      # 테마 토글 + 한/영 토글 + 스크롤 애니메이션
 assets/favicon.svg  # 파비콘
-files/Seungsu_Lee_CV.pdf  # 웹 공개용 CV (전화번호 제거판 — Seungsu_CV repo의 make_web_cv.sh로 생성)
+files/Seungsu_Lee_CV.pdf  # 웹 공개용 CV (Seungsu_CV repo의 resume.pdf 복사본 — 원본에 전화번호 없음)
 images/             # 프로필·프로젝트 이미지 (예정)
 404.html            # 404 페이지
 .nojekyll           # GitHub Pages의 Jekyll 처리 비활성화
