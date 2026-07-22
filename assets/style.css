@@ -235,6 +235,10 @@ html:not([data-lang="en"]) .en { display: none !important; }
 .card h3 { font-size: 1.08rem; letter-spacing: -0.01em; }
 .card p { color: var(--text-soft); font-size: 0.94rem; }
 .card > p:nth-last-child(2) { flex: 1; }
+/* card with a live-demo CTA: description grows, tags stay compact, button sits at bottom */
+.card:has(.card-cta) > p.tags { flex: initial; }
+.card:has(.card-cta) > p:nth-last-child(3) { flex: 1; }
+.card-cta { align-self: flex-start; margin-top: 4px; padding: 8px 15px; font-size: 0.88rem; }
 .tags { display: flex; flex-wrap: wrap; gap: 7px; }
 .tags span {
   font-family: ui-monospace, monospace; font-size: 0.75rem;
