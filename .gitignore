@@ -1,0 +1,8 @@
+# 원본 이미지는 커밋하지 않음 (장당 1~3MB — git 히스토리에 영구히 남음).
+# 웹에 실제로 쓰이는 것은 images/projects/*.jpg 이고, 아래 스크립트로 원본에서 생성함:
+#   python3 tools/make_project_images.py
+/images/*.png
+
+# 프로필 사진 — 홈페이지에 노출하지 않기로 함.
+# 공개 저장소에 커밋하면 페이지에 링크가 없어도 URL로 누구나 받을 수 있으므로 제외.
+/images/profile.jpg
