@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>흐름 관리 · asset-flow</title>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <span class="brand">asset-flow</span>
+    
+    <a href="index.html" class="">현금흐름</a>
+    <a href="networth.html" class="">순자산</a>
+    <a href="flows.html" class="active">흐름 관리</a>
+    <a href="snapshots.html" class="">스냅샷</a>
+    <a href="accounts.html" class="">계정</a>
+  </nav>
+</header>
+<main>
+  <div class="demo-banner"><strong>정적 데모</strong> — 포트폴리오용으로 캡처한 스냅샷입니다. 숫자는 모두 가상이며, 서버가 없어 입력·수정은 동작하지 않습니다.<span class="en-note">Static snapshot for portfolio purposes. All figures are fictitious; forms are inert without a backend.</span></div>
+  
+  
+<h1>현금흐름 수정</h1>
+<p class="muted">반복되는 수입·지출을 한 줄로 등록합니다. 일회성 큰 지출은 기간을 1개월로,
+월급처럼 계속되는 흐름은 기간을 비워 두세요.</p>
+
+<form class="card" method="post"
+      action="/flows/2/edit">
+  <div class="field">
+    <label>구분</label>
+    <select name="direction">
+      <option value="income" >수입</option>
+      <option value="expense" selected>지출</option>
+    </select>
+  </div>
+  <div class="field">
+    <label>이름</label>
+    <input name="name" required placeholder="예: 월세, 월급, 자동차 할부"
+           value="생활비">
+  </div>
+  <div class="field">
+    <label>월 금액 (만원)</label>
+    <input name="amount" type="number" step="any" min="0" required placeholder="100"
+           value="235">
+  </div>
+  <div class="field">
+    <label>시작 월</label>
+    <input name="start_month" type="month"
+           value="2025-06" required>
+  </div>
+  <div class="field">
+    <label>기간 (개월, 비우면 계속)</label>
+    <input name="months" type="number" min="1" placeholder="12"
+           value="">
+  </div>
+  <div class="field">
+    <label>메모</label>
+    <input name="memo" value="관리비·식비·통신">
+  </div>
+  <button type="submit">수정 저장</button>
+  <a class="ghost" href="flows.html">취소</a>
+</form>
+
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>이름</th><th class="num">월 금액</th><th>시작</th><th>종료</th>
+        <th>메모</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td>월급</td>
+        <td class="num pos">480만</td>
+        <td>2025-06</td>
+        <td>계속</td>
+        <td class="detail" style="text-align:left"></td>
+        <td>
+          <a class="ghost" href="flows-edit-1.html" style="margin-right:6px">수정</a>
+          <form method="post" action="/flows/1/delete" style="display:inline"
+                onsubmit="return confirm('월급 흐름을 삭제할까요?')">
+            <button class="ghost" type="submit">삭제</button>
+          </form>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>적금 납입</td>
+        <td class="num neg-text">-50만</td>
+        <td>2025-06</td>
+        <td>2027-05</td>
+        <td class="detail" style="text-align:left"></td>
+        <td>
+          <a class="ghost" href="flows-edit-4.html" style="margin-right:6px">수정</a>
+          <form method="post" action="/flows/4/delete" style="display:inline"
+                onsubmit="return confirm('적금 납입 흐름을 삭제할까요?')">
+            <button class="ghost" type="submit">삭제</button>
+          </form>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>주담대 원리금</td>
+        <td class="num neg-text">-142만</td>
+        <td>2025-06</td>
+        <td>2050-05</td>
+        <td class="detail" style="text-align:left">30년 만기</td>
+        <td>
+          <a class="ghost" href="flows-edit-3.html" style="margin-right:6px">수정</a>
+          <form method="post" action="/flows/3/delete" style="display:inline"
+                onsubmit="return confirm('주담대 원리금 흐름을 삭제할까요?')">
+            <button class="ghost" type="submit">삭제</button>
+          </form>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>생활비</td>
+        <td class="num neg-text">-235만</td>
+        <td>2025-06</td>
+        <td>계속</td>
+        <td class="detail" style="text-align:left">관리비·식비·통신</td>
+        <td>
+          <a class="ghost" href="flows-edit-2.html" style="margin-right:6px">수정</a>
+          <form method="post" action="/flows/2/delete" style="display:inline"
+                onsubmit="return confirm('생활비 흐름을 삭제할까요?')">
+            <button class="ghost" type="submit">삭제</button>
+          </form>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>자동차 구매</td>
+        <td class="num neg-text">-3,200만</td>
+        <td>2026-10</td>
+        <td>2026-10</td>
+        <td class="detail" style="text-align:left">일시불</td>
+        <td>
+          <a class="ghost" href="flows-edit-5.html" style="margin-right:6px">수정</a>
+          <form method="post" action="/flows/5/delete" style="display:inline"
+                onsubmit="return confirm('자동차 구매 흐름을 삭제할까요?')">
+            <button class="ghost" type="submit">삭제</button>
+          </form>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>성과급</td>
+        <td class="num pos">800만</td>
+        <td>2027-01</td>
+        <td>2027-01</td>
+        <td class="detail" style="text-align:left"></td>
+        <td>
+          <a class="ghost" href="flows-edit-6.html" style="margin-right:6px">수정</a>
+          <form method="post" action="/flows/6/delete" style="display:inline"
+                onsubmit="return confirm('성과급 흐름을 삭제할까요?')">
+            <button class="ghost" type="submit">삭제</button>
+          </form>
+        </td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+
+
+</main>
+<script src="static/chart.js"></script>
+
+<script>
+(function () {
+  function flash() {
+    var b = document.querySelector('.demo-banner');
+    if (!b) return;
+    b.classList.remove('flash');
+    void b.offsetWidth;
+    b.classList.add('flash');
+    b.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  document.addEventListener('submit', function (e) { e.preventDefault(); flash(); }, true);
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href="#inert"]');
+    if (a) { e.preventDefault(); flash(); }
+  });
+})();
+</script>
+</body>
+</html>

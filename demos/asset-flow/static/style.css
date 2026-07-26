@@ -1,0 +1,215 @@
+/* 색 토큰: dataviz 레퍼런스 팔레트 (light/dark 검증된 값) */
+:root {
+  --page:        #f9f9f7;
+  --surface:     #fcfcfb;
+  --ink:         #0b0b0b;
+  --ink-2:       #52514e;
+  --muted:       #898781;
+  --grid:        #e1e0d9;
+  --baseline:    #c3c2b7;
+  --border:      rgba(11, 11, 11, 0.10);
+  --series-1:    #2a78d6;   /* 파랑: 잔고·순자산 */
+  --neg:         #e34948;   /* 빨강: 음수 막대 (diverging 반대극) */
+  --good-text:   #006300;
+  --bad-text:    #d03b3b;
+  --notice-bg:   #eef4fc;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page:      #0d0d0d;
+    --surface:   #1a1a19;
+    --ink:       #ffffff;
+    --ink-2:     #c3c2b7;
+    --muted:     #898781;
+    --grid:      #2c2c2a;
+    --baseline:  #383835;
+    --border:    rgba(255, 255, 255, 0.10);
+    --series-1:  #3987e5;
+    --neg:       #e66767;
+    --good-text: #0ca30c;
+    --bad-text:  #e66767;
+    --notice-bg: #16202e;
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--page);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.5;
+}
+header {
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+nav {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+nav .brand { font-weight: 700; margin-right: 16px; padding: 12px 0; }
+nav a {
+  color: var(--ink-2);
+  text-decoration: none;
+  padding: 12px 10px;
+  border-bottom: 2px solid transparent;
+}
+nav a.active { color: var(--ink); border-bottom-color: var(--series-1); font-weight: 600; }
+nav a:hover { color: var(--ink); }
+
+main { max-width: 1000px; margin: 0 auto; padding: 20px; }
+h1 { font-size: 20px; margin: 8px 0 16px; }
+h2 { font-size: 16px; margin: 24px 0 8px; }
+
+.notice {
+  background: var(--notice-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+
+/* 스탯 타일 */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.tile .label { color: var(--ink-2); font-size: 13px; }
+.tile .value { font-size: 24px; font-weight: 700; margin-top: 2px; }
+
+/* 차트 카드 */
+figure.chart {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin: 0 0 20px;
+  position: relative;
+}
+figure.chart figcaption { font-weight: 600; margin-bottom: 10px; }
+figure.chart .sub { color: var(--muted); font-size: 12px; font-weight: 400; margin-left: 8px; }
+.viz-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  padding: 8px 10px;
+  font-size: 12px;
+  display: none;
+  z-index: 10;
+  white-space: nowrap;
+}
+.viz-tooltip .t-label { color: var(--ink-2); margin-bottom: 2px; }
+.viz-tooltip .t-value { font-weight: 700; }
+.viz-tooltip .t-extra { color: var(--ink-2); }
+
+/* 테이블 */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { padding: 8px 12px; text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th {
+  color: var(--ink-2);
+  font-weight: 600;
+  border-bottom: 1px solid var(--baseline);
+  position: sticky; top: 0;
+  background: var(--surface);
+}
+tbody tr { border-bottom: 1px solid var(--grid); }
+tbody tr:last-child { border-bottom: none; }
+td.num, th.num { font-variant-numeric: tabular-nums; }
+td .detail { color: var(--muted); font-size: 12px; white-space: normal; }
+.pos { color: var(--good-text); }
+.neg-text { color: var(--bad-text); }
+.muted { color: var(--muted); }
+
+/* 폼 */
+form.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+}
+form.card .field { display: flex; flex-direction: column; gap: 4px; }
+form.card label { font-size: 12px; color: var(--ink-2); }
+input, select, button {
+  font: inherit;
+  color: var(--ink);
+  background: var(--page);
+  border: 1px solid var(--baseline);
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+input:focus, select:focus { outline: 2px solid var(--series-1); outline-offset: -1px; }
+input[type="number"] { text-align: right; }
+button {
+  background: var(--series-1);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 8px 16px;
+}
+button:hover { filter: brightness(1.08); }
+button.ghost, a.ghost {
+  background: transparent;
+  color: var(--ink-2);
+  border: 1px solid var(--baseline);
+  border-radius: 6px;
+  font-weight: 400;
+  padding: 4px 10px;
+  font-size: 13px;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+button.ghost:hover { color: var(--bad-text); border-color: var(--bad-text); filter: none; }
+a.ghost:hover { color: var(--series-1); border-color: var(--series-1); }
+
+.range-links { margin-bottom: 12px; font-size: 13px; }
+.range-links a { color: var(--ink-2); text-decoration: none; padding: 4px 8px; border-radius: 6px; }
+.range-links a.active { background: var(--surface); border: 1px solid var(--border); color: var(--ink); font-weight: 600; }
+
+.empty {
+  color: var(--ink-2);
+  background: var(--surface);
+  border: 1px dashed var(--baseline);
+  border-radius: 10px;
+  padding: 32px;
+  text-align: center;
+}
+.empty a { color: var(--series-1); }
+
+.demo-banner {
+  background: var(--notice-bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--series-1);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.demo-banner strong { color: var(--ink); }
+.demo-banner .en-note { display: block; font-size: 12px; margin-top: 2px; opacity: .75; }
+.demo-banner.flash { animation: demo-flash .6s ease; }
+@keyframes demo-flash {
+  0%, 100% { background: var(--notice-bg); }
+  35%      { background: var(--series-1); color: #fff; }
+}

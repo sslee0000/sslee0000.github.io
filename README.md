@@ -8,15 +8,32 @@
 index.html          # 랜딩: 사진·한 줄 소개·CV/Portfolio 입구
 cv.html             # CV: 학력·경력·논문·스킬 + PDF 다운로드
 portfolio.html      # Portfolio: 프로젝트 카드
+toys.html           # 사이드 프로젝트 카드
 assets/style.css    # 디자인 (다크/라이트 테마, 반응형)
 assets/main.js      # 테마 토글 + 한/영 토글 + 스크롤 애니메이션
 assets/favicon.svg  # 파비콘
 files/Seungsu_Lee_CV.pdf  # 웹 공개용 CV (Seungsu_CV repo의 resume.pdf 복사본 — 원본에 전화번호 없음)
 images/             # 프로필·프로젝트 이미지 (예정)
+demos/              # 라이브 데모 (다른 repo에서 복사해 온 산출물 — 아래 참고)
 404.html            # 404 페이지
 .nojekyll           # GitHub Pages의 Jekyll 처리 비활성화
 QUESTIONS.md        # 미결 질문 (답변 후 정리)
 ```
+
+## demos/ — 다른 repo에서 복사해 오는 산출물
+
+소스 저장소가 private이라 그쪽 GitHub Pages를 쓸 수 없는 데모는, 결과물 파일만
+이 repo로 복사해서 서빙합니다. **여기 있는 파일은 직접 고치지 마세요** — 원본에서
+고치고 동기화 스크립트를 돌려야 합니다.
+
+| 경로 | 원본 | 동기화 |
+|---|---|---|
+| `demos/lease-vs-buy/` | `mock_real_estate` (private) | 원본 repo에서 `./sync_to_homepage.sh` |
+| `demos/asset-flow/` | `asset-flow` (private) | 원본 repo에서 `./make_demo_snapshot.py` |
+
+- **lease-vs-buy**: 계산이 전부 브라우저에서 도는 단일 HTML 파일이라 그대로 복사하면 됩니다.
+- **asset-flow**: 서버 렌더링 앱이라 복사로는 안 되고, 가짜 데모 DB로 앱을 띄워 각 페이지를
+  크롤링한 정적 스냅샷입니다. 실제 재무 데이터는 들어가지 않습니다.
 
 ## 한/영 토글 (기본: 한글)
 

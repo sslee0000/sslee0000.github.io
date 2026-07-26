@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>전세 vs 매매 시뮬레이터</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --page: #f9f9f7;
+    --surface-1: #fcfcfb;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --baseline: #c3c2b7;
+    --border: rgba(11, 11, 11, 0.10);
+    --series-buy: #2a78d6;   /* 매매 */
+    --series-lease: #1baf7a; /* 전세 */
+    --critical: #d03b3b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page: #0d0d0d;
+      --surface-1: #1a1a19;
+      --text-primary: #ffffff;
+      --text-secondary: #c3c2b7;
+      --muted: #898781;
+      --grid: #2c2c2a;
+      --baseline: #383835;
+      --border: rgba(255, 255, 255, 0.10);
+      --series-buy: #3987e5;
+      --series-lease: #199e70;
+      --critical: #e66767;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--text-primary);
+    font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .app { max-width: 1140px; margin: 0 auto; padding: 32px 20px 56px; }
+
+  header h1 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+  header p { margin: 6px 0 0; color: var(--text-secondary); font-size: 14px; }
+
+  .layout { display: grid; gap: 20px; grid-template-columns: 1fr; margin-top: 24px; }
+  @media (min-width: 1000px) {
+    .layout { grid-template-columns: 380px minmax(0, 1fr); align-items: start; }
+    .inputs-col { position: sticky; top: 20px; }
+  }
+  .results-col { display: grid; gap: 20px; min-width: 0; }
+  .results-col.stale { opacity: 0.45; pointer-events: none; }
+
+  .card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  /* ---------- 입력 폼 ---------- */
+  fieldset { border: 0; padding: 0; margin: 0 0 20px; }
+  fieldset:last-of-type { margin-bottom: 0; }
+  legend {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 13px; font-weight: 700; color: var(--text-secondary);
+    padding: 0; margin-bottom: 8px;
+  }
+  .key-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .key-dot.buy { background: var(--series-buy); }
+  .key-dot.lease { background: var(--series-lease); }
+
+  .field { margin: 10px 0 0; }
+  .field label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .input-wrap { position: relative; }
+  .input-wrap input {
+    width: 100%;
+    padding: 8px 34px 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--page);
+    color: var(--text-primary);
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  .input-wrap input:focus { outline: 2px solid var(--series-buy); outline-offset: -1px; }
+  .input-wrap input[readonly] { background: transparent; color: var(--text-secondary); }
+  .field select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--page);
+    color: var(--text-primary);
+    font: inherit;
+  }
+  .field select:focus { outline: 2px solid var(--series-buy); outline-offset: -1px; }
+  .checks { display: grid; gap: 6px; margin-top: 10px; }
+  .check { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-secondary); cursor: pointer; }
+  .check input { width: 15px; height: 15px; margin: 0; accent-color: var(--series-buy); flex: none; }
+  .check-note { color: var(--muted); font-size: 12px; }
+  .checks.off { opacity: 0.4; pointer-events: none; }
+  .input-wrap .unit {
+    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    font-size: 13px; color: var(--muted); pointer-events: none;
+  }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 3px; min-height: 16px; }
+  .field-error { font-size: 12px; color: var(--critical); margin-top: 3px; }
+  .form-note { font-size: 12px; color: var(--muted); margin-top: 16px; }
+
+  /* ---------- 결론 카드 ---------- */
+  .v-label { font-size: 13px; color: var(--text-secondary); }
+  .v-hero {
+    display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .v-hero .who { display: inline-flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 600; }
+  .v-hero .amount { font-size: 44px; font-weight: 650; letter-spacing: -0.02em; line-height: 1.1; }
+  .v-hero .tail { font-size: 20px; font-weight: 600; color: var(--text-secondary); }
+  .v-sub { margin-top: 8px; font-size: 13px; color: var(--muted); }
+
+  .bars { margin-top: 18px; display: grid; gap: 10px; }
+  .bar-row { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 10px; align-items: center; }
+  .bar-name { font-size: 13px; color: var(--text-secondary); }
+  .bar-cell { display: flex; align-items: center; gap: 8px; }
+  .bar { height: 18px; border-radius: 0 4px 4px 0; flex: none; }
+  .bar.buy { background: var(--series-buy); }
+  .bar.lease { background: var(--series-lease); }
+  .bar-val { font-size: 13px; font-weight: 600; white-space: nowrap; }
+  @media (prefers-reduced-motion: no-preference) {
+    .bar { transition: width 0.25s ease; }
+  }
+
+  .model-warn {
+    margin-top: 14px; font-size: 12.5px; color: var(--text-secondary);
+    border-top: 1px solid var(--grid); padding-top: 10px;
+  }
+  .model-warn:empty { display: none; }
+
+  /* ---------- 차트 카드 ---------- */
+  .chart-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .chart-head h2 { margin: 0; font-size: 15px; font-weight: 700; }
+  .legend { display: flex; gap: 16px; font-size: 13px; color: var(--text-secondary); }
+  .legend .item { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .line-key { width: 16px; height: 2px; border-radius: 1px; }
+  .legend .line-key.buy { background: var(--series-buy); }
+  .legend .line-key.lease { background: var(--series-lease); }
+
+  .chart-wrap { position: relative; margin-top: 12px; outline: none; }
+  .chart-wrap:focus-visible { outline: 2px solid var(--series-buy); outline-offset: 4px; border-radius: 4px; }
+  .chart-wrap svg { display: block; width: 100%; height: auto; }
+  .chart-hint { margin-top: 6px; font-size: 12px; color: var(--muted); }
+
+  .tooltip {
+    position: absolute; z-index: 2; pointer-events: none;
+    background: var(--surface-1); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 10px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    font-size: 12.5px; min-width: 150px;
+    visibility: hidden;
+  }
+  .tooltip .tt-title { color: var(--muted); margin-bottom: 5px; }
+  .tooltip .tt-row { display: flex; align-items: center; gap: 7px; margin-top: 3px; }
+  .tooltip .tt-key { width: 12px; height: 2px; border-radius: 1px; flex: none; }
+  .tooltip .tt-val { font-weight: 650; font-variant-numeric: tabular-nums; }
+  .tooltip .tt-name { color: var(--text-secondary); }
+  .tooltip .tt-diff { margin-top: 6px; padding-top: 5px; border-top: 1px solid var(--grid); color: var(--muted); }
+
+  details.table-view { margin-top: 14px; border-top: 1px solid var(--grid); padding-top: 10px; }
+  details.table-view summary { cursor: pointer; font-size: 13px; color: var(--text-secondary); }
+  .table-scroll { overflow-x: auto; margin-top: 10px; }
+  table.data { border-collapse: collapse; width: 100%; font-size: 13px; }
+  table.data th, table.data td { padding: 6px 10px; text-align: right; white-space: nowrap; }
+  table.data th:first-child, table.data td:first-child { text-align: left; }
+  table.data th { color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--grid); }
+  table.data td { border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; }
+  table.data tr:last-child td { border-bottom: 0; }
+
+  /* ---------- 월 현금흐름 · 상세 카드 ---------- */
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; }
+  .kpi .k-label { font-size: 12.5px; color: var(--text-secondary); }
+  .kpi .k-value { font-size: 19px; font-weight: 650; margin-top: 2px; }
+  .kpi .k-note { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+  .detail-grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .detail-grid { grid-template-columns: 1fr 1fr; } }
+  .detail-card h3 { display: flex; align-items: center; gap: 7px; margin: 0 0 10px; font-size: 14px; font-weight: 700; }
+  .d-row { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; font-size: 13.5px; }
+  .d-row .d-label { color: var(--text-secondary); }
+  .d-row .d-val { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .d-row.total { border-top: 1px solid var(--grid); margin-top: 6px; padding-top: 9px; font-weight: 700; }
+  .d-row.ref { font-size: 12.5px; }
+  .d-row.ref .d-label, .d-row.ref .d-val { color: var(--muted); }
+
+  /* ---------- 민감도 히트맵 ---------- */
+  .breakeven { margin-top: 14px; }
+  .hm-caption { margin: 18px 0 8px; font-size: 13px; color: var(--text-secondary); }
+  .hm-wrap { position: relative; }
+  .hm-grid { display: grid; gap: 2px; }
+  .hm-cell { height: 20px; border-radius: 2px; }
+  .hm-cell:hover { outline: 1.5px solid var(--text-primary); outline-offset: -1px; }
+  .hm-ylabel { font-size: 11.5px; color: var(--muted); text-align: right; padding-right: 8px; align-self: center; font-variant-numeric: tabular-nums; }
+  .hm-xlabel { font-size: 11.5px; color: var(--muted); text-align: center; padding-top: 4px; font-variant-numeric: tabular-nums; }
+  .hm-axis-title { font-size: 11.5px; color: var(--muted); text-align: center; margin-top: 4px; }
+  .hm-marker {
+    position: absolute; width: 11px; height: 11px; border-radius: 50%;
+    border: 2.5px solid var(--text-primary); box-shadow: 0 0 0 2px var(--surface-1);
+    transform: translate(-50%, -50%); pointer-events: none;
+  }
+  .hm-legend { display: flex; align-items: center; gap: 3px; margin-top: 14px; font-size: 12px; color: var(--text-secondary); flex-wrap: wrap; }
+  .hm-legend .sw { width: 18px; height: 10px; border-radius: 2px; }
+  .hm-legend .lab { margin: 0 7px; }
+
+  /* ---------- 버튼 ---------- */
+  .form-actions { margin-top: 16px; display: grid; gap: 8px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 8px 14px; border: 1px solid var(--border); border-radius: 8px;
+    background: var(--page); color: var(--text-primary);
+    font: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer;
+  }
+  .btn:hover { border-color: var(--baseline); }
+  .btn:focus-visible { outline: 2px solid var(--series-buy); outline-offset: -1px; }
+
+  footer.disclaimer { margin-top: 24px; font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+  footer.disclaimer ul { margin: 6px 0 0; padding-left: 18px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>전세 vs 매매 시뮬레이터</h1>
+    <p>두 시나리오의 월 현금지출(주택담보대출 원리금 상환액)을 동일하게 두고, N년 후 총자산을 비교합니다.</p>
+  </header>
+
+  <div class="layout">
+    <!-- ================= 입력 ================= -->
+    <div class="inputs-col">
+      <form class="card" id="form" autocomplete="off">
+        <fieldset>
+          <legend><span class="key-dot buy"></span>매매 조건</legend>
+          <div class="field">
+            <label for="price">집값</label>
+            <div class="input-wrap"><input id="price" type="text" inputmode="numeric" data-money value="1,500,000,000"><span class="unit">원</span></div>
+            <div class="hint" id="price-hint"></div>
+          </div>
+          <div class="field">
+            <label for="loan">주택담보대출 원금</label>
+            <div class="input-wrap"><input id="loan" type="text" inputmode="numeric" data-money value="1,000,000,000"><span class="unit">원</span></div>
+            <div class="hint" id="loan-hint"></div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="loanRate">대출 연이율</label>
+              <div class="input-wrap"><input id="loanRate" type="number" value="3.0" step="0.1" min="0" max="20"><span class="unit">%</span></div>
+            </div>
+            <div class="field">
+              <label for="loanYears">상환기간</label>
+              <div class="input-wrap"><input id="loanYears" type="number" value="50" step="1" min="1" max="60"><span class="unit">년</span></div>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="homeGrowth">집값 연간 상승률</label>
+              <div class="input-wrap"><input id="homeGrowth" type="number" value="7.5" step="0.1" min="-20" max="30"><span class="unit">%</span></div>
+            </div>
+            <div class="field">
+              <label for="maintenance">기타 유지비 (기간 총액)</label>
+              <div class="input-wrap"><input id="maintenance" type="text" inputmode="numeric" data-money value="0"><span class="unit">원</span></div>
+              <div class="hint" id="maintenance-hint"></div>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="taxMode">취득세</label>
+              <select id="taxMode">
+                <option value="auto">자동 계산 (1주택)</option>
+                <option value="manual">직접 입력</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="acqTax">취득세 금액</label>
+              <div class="input-wrap"><input id="acqTax" type="text" inputmode="numeric" data-money value="0" readonly><span class="unit">원</span></div>
+              <div class="hint" id="acqTax-hint"></div>
+            </div>
+          </div>
+          <div class="checks" id="taxChecks">
+            <label class="check"><input type="checkbox" id="over85"> 전용면적 85㎡ 초과 <span class="check-note">농특세 0.2%</span></label>
+            <label class="check"><input type="checkbox" id="firstTime"> 생애최초 구입 <span class="check-note">200만원 한도 감면</span></label>
+          </div>
+          <div class="hint" id="taxHint"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="key-dot lease"></span>전세 조건</legend>
+          <div class="field">
+            <label for="deposit">전세보증금</label>
+            <div class="input-wrap"><input id="deposit" type="text" inputmode="numeric" data-money value="500,000,000"><span class="unit">원</span></div>
+            <div class="hint" id="deposit-hint"></div>
+          </div>
+          <div class="field">
+            <label for="rentLoan">전세대출 원금</label>
+            <div class="input-wrap"><input id="rentLoan" type="text" inputmode="numeric" data-money value="120,000,000"><span class="unit">원</span></div>
+            <div class="hint" id="rentLoan-hint"></div>
+          </div>
+          <div class="field">
+            <label for="rentRate">전세대출 연이율</label>
+            <div class="input-wrap"><input id="rentRate" type="number" value="2.5" step="0.1" min="0" max="20"><span class="unit">%</span></div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="renewYears">재계약 주기</label>
+              <div class="input-wrap"><input id="renewYears" type="number" value="2" step="1" min="1" max="20"><span class="unit">년</span></div>
+            </div>
+            <div class="field">
+              <label for="depositHike">재계약 시 인상률</label>
+              <div class="input-wrap"><input id="depositHike" type="number" value="5" step="0.5" min="0" max="50"><span class="unit">%</span></div>
+            </div>
+          </div>
+          <div class="hint" style="margin-top:6px">보증금 인상분은 투자 자금에서 인출해 보증금에 넣는 것으로 계산합니다. 0%로 두면 보증금이 그대로 유지됩니다.</div>
+        </fieldset>
+
+        <fieldset>
+          <legend>공통 가정</legend>
+          <div class="row2">
+            <div class="field">
+              <label for="years">시뮬레이션 기간</label>
+              <div class="input-wrap"><input id="years" type="number" value="10" step="1" min="1" max="60"><span class="unit">년</span></div>
+              <div class="field-error" id="years-error"></div>
+            </div>
+            <div class="field">
+              <label for="investRate">금융투자 연수익률</label>
+              <div class="input-wrap"><input id="investRate" type="number" value="15" step="0.5" min="-50" max="50"><span class="unit">%</span></div>
+            </div>
+          </div>
+          <div class="hint" style="margin-top:6px">전세 시 남는 목돈의 일시불·적립식 투자에 적용되는 수익률 (주식, 펀드 등)</div>
+        </fieldset>
+
+        <div class="form-actions">
+          <button type="button" class="btn" id="copyLink">현재 시나리오 링크 복사</button>
+          <div class="form-note">값을 바꾸면 결과가 즉시 갱신되고 주소(URL)에도 저장됩니다. 링크를 복사해 두면 같은 시나리오를 다른 기기에서 그대로 열 수 있어요.</div>
+        </div>
+      </form>
+    </div>
+
+    <!-- ================= 결과 ================= -->
+    <div class="results-col" id="results">
+      <section class="card verdict" aria-live="polite">
+        <div class="v-label" id="vLabel"></div>
+        <div class="v-hero">
+          <span class="who"><span class="key-dot" id="vDot"></span><span id="vWho"></span></span>
+          <span class="amount" id="vAmount"></span>
+          <span class="tail" id="vTail"></span>
+        </div>
+        <div class="v-sub" id="vSub"></div>
+        <div class="bars">
+          <div class="bar-row">
+            <span class="bar-name">매매</span>
+            <div class="bar-cell"><div class="bar buy" id="barBuy"></div><span class="bar-val" id="barBuyVal"></span></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-name">전세</span>
+            <div class="bar-cell"><div class="bar lease" id="barLease"></div><span class="bar-val" id="barLeaseVal"></span></div>
+          </div>
+        </div>
+        <div class="model-warn" id="modelWarn"></div>
+      </section>
+
+      <section class="card">
+        <div class="chart-head">
+          <h2>연차별 총자산 추이</h2>
+          <div class="legend" aria-hidden="true">
+            <span class="item"><span class="line-key buy"></span>매매</span>
+            <span class="item"><span class="line-key lease"></span>전세</span>
+          </div>
+        </div>
+        <div class="chart-wrap" id="chartWrap" tabindex="0" role="img"
+             aria-label="연차별 총자산 추이 선 그래프. 좌우 화살표 키로 연차별 값을 확인할 수 있고, 아래 표에서도 같은 값을 볼 수 있습니다.">
+          <div class="tooltip" id="tooltip"></div>
+        </div>
+        <div class="chart-hint">차트에 마우스를 올리거나, 포커스 후 ←/→ 키로 연차별 값을 확인하세요.</div>
+        <details class="table-view">
+          <summary>연차별 데이터 표로 보기</summary>
+          <div class="table-scroll">
+            <table class="data" id="dataTable">
+              <thead><tr><th scope="col">연차</th><th scope="col">매매 총자산</th><th scope="col">전세 총자산</th><th scope="col">차이 (매매−전세)</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+
+      <section class="card">
+        <div class="chart-head">
+          <h2>민감도 분석</h2>
+        </div>
+        <div class="kpis breakeven">
+          <div class="kpi">
+            <div class="k-label">집값 상승률 손익분기</div>
+            <div class="k-value" id="beGrowth"></div>
+            <div class="k-note" id="beGrowthNote"></div>
+          </div>
+          <div class="kpi">
+            <div class="k-label">투자수익률 손익분기</div>
+            <div class="k-value" id="beInvest"></div>
+            <div class="k-note" id="beInvestNote"></div>
+          </div>
+        </div>
+        <div class="hm-caption">가정이 달라지면 결론이 어떻게 바뀌는지 — 가로축: 집값 연간 상승률, 세로축: 금융투자 연수익률. ○ 표시가 현재 입력값입니다.</div>
+        <div class="hm-wrap" id="hmWrap">
+          <div class="tooltip" id="hmTooltip"></div>
+        </div>
+        <div class="hm-axis-title">집값 연간 상승률 (%)</div>
+        <div class="hm-legend" id="hmLegend"></div>
+        <details class="table-view">
+          <summary>민감도 데이터 표로 보기 (총자산 차이, 매매−전세)</summary>
+          <div class="table-scroll">
+            <table class="data" id="hmTable"><thead></thead><tbody></tbody></table>
+          </div>
+        </details>
+      </section>
+
+      <section class="card">
+        <div class="kpis">
+          <div class="kpi">
+            <div class="k-label">매월 현금지출 (원리금 상환액)</div>
+            <div class="k-value" id="kPayment"></div>
+            <div class="k-note">두 시나리오 공통</div>
+          </div>
+          <div class="kpi">
+            <div class="k-label">매월 전세대출 이자</div>
+            <div class="k-value" id="kRentInt"></div>
+            <div class="k-note">전세 시나리오 지출</div>
+          </div>
+          <div class="kpi">
+            <div class="k-label">매월 적립식 투자액</div>
+            <div class="k-value" id="kSurplus"></div>
+            <div class="k-note">전세 시나리오: 원리금 − 전세대출 이자</div>
+          </div>
+        </div>
+      </section>
+
+      <div class="detail-grid">
+        <section class="card detail-card">
+          <h3><span class="key-dot buy"></span><span id="buyTitle">매매 상세</span></h3>
+          <div id="buyDetail"></div>
+        </section>
+        <section class="card detail-card">
+          <h3><span class="key-dot lease"></span><span id="leaseTitle">전세 상세</span></h3>
+          <div id="leaseDetail"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <footer class="disclaimer">
+    간이 모델이므로 다음은 반영하지 않습니다. 결과 해석 시 유의하세요.
+    <ul>
+      <li>세금: 재산세·종부세·양도세, 금융투자 관련 세금 (취득세는 반영됨)</li>
+      <li>금리 변동, 전세 재계약 실패·이사 비용</li>
+      <li>취득세는 1주택 유상거래 기준입니다. 다주택·감면 대상은 직접 입력하세요. 세법은 자주 바뀌니 실제 납부액은 반드시 확인하세요.</li>
+      <li>결과는 투자수익률과 집값 상승률 가정에 매우 민감합니다.</li>
+    </ul>
+  </footer>
+</div>
+
+<script>
+"use strict";
+
+/* ===================== 계산 로직 (lease_vs_buy_simulator.py 포팅) ===================== */
+
+function monthlyPayment(principal, annualRate, months) {
+  const monthlyRate = annualRate / 12;
+  if (monthlyRate === 0) return principal / months;
+  const factor = Math.pow(1 + monthlyRate, months);
+  return principal * monthlyRate * factor / (factor - 1);
+}
+
+/* 주택 유상거래 취득세 (1주택 기준) — 취득세 본세 + 지방교육세 + 농어촌특별세 */
+function acquisitionTax(price, over85, firstTime) {
+  let rate;
+  if (price <= 600000000) rate = 0.01;
+  else if (price <= 900000000) {
+    // 6~9억 구간 누진: (취득가액(억) × 2/3 − 3)%, 소수점 넷째자리까지
+    rate = Math.round((price / 100000000 * 2 / 3 - 3) * 100) / 10000;
+  } else rate = 0.03;
+
+  let base = price * rate;                              // 취득세 본세
+  if (firstTime && price <= 1200000000) {
+    base = Math.max(0, base - 2000000);                 // 생애최초 감면 (200만원 한도)
+  }
+  const eduTax = price * rate * 0.1;                    // 지방교육세 = 취득세율의 10%
+  const ruralTax = over85 ? price * 0.002 : 0;          // 농어촌특별세 (85㎡ 초과)
+  return base + eduTax + ruralTax;
+}
+
+/* 전세 시나리오의 투자 잔고를 매월 시뮬레이션한다.
+ *
+ * 투자 풀을 일시불/적립식으로 나눠 추적하는 이유는 두 가지 복리 관례가 다르기 때문이다
+ * (일시불은 연복리 (1+r)^t, 적립식은 월복리 r/12). 재계약 시 보증금 인상분은
+ * 두 풀에서 잔고 비율대로 인출한다. 인상률이 0이면 인출이 없어 기존 닫힌 수식과 동일하다.
+ */
+function leaseSimulate(inp, investRate, monthlySurplus, lumpSum, series) {
+  const mLump = Math.pow(1 + investRate, 1 / 12) - 1;   // 연복리를 월로 환산
+  const mContrib = investRate / 12;                     // 적립식 월복리
+  const renewMonths = Math.round(inp.renewYears * 12);
+  const totalMonths = inp.years * 12;
+
+  let poolLump = lumpSum, poolContrib = 0;
+  let deposit = inp.deposit, depositRaised = 0, shortfallYear = 0;
+
+  if (series) series.push(deposit - inp.rentLoan + poolLump);
+
+  for (let t = 1; t <= inp.years; t++) {
+    for (let m = 1; m <= 12; m++) {
+      poolLump *= 1 + mLump;
+      poolContrib = poolContrib * (1 + mContrib) + monthlySurplus;
+
+      // 재계약 시점(계약 만료 시점은 제외 — 그때는 보증금을 돌려받는다)
+      const month = (t - 1) * 12 + m;
+      if (inp.depositHike > 0 && renewMonths > 0 &&
+          month % renewMonths === 0 && month < totalMonths) {
+        const raise = deposit * inp.depositHike;
+        deposit += raise;
+        depositRaised += raise;
+
+        const pool = poolLump + poolContrib;
+        if (pool >= raise) {
+          const ratio = raise / pool;                   // 잔고 비율대로 인출
+          poolLump -= poolLump * ratio;
+          poolContrib -= poolContrib * ratio;
+        } else {
+          poolLump = 0;                                 // 투자금이 부족한 구간
+          poolContrib = pool - raise;
+          if (!shortfallYear) shortfallYear = t;
+        }
+      }
+    }
+    if (series) series.push(deposit - inp.rentLoan + poolLump + poolContrib);
+  }
+  return {
+    deposit, depositRaised, poolLump, poolContrib, shortfallYear,
+    totalAssets: deposit - inp.rentLoan + poolLump + poolContrib,
+  };
+}
+
+/* 매월 상환을 시뮬레이션하며 연말 스냅샷과 최종 상세를 함께 계산한다. */
+function simulate(inp) {
+  const payment = monthlyPayment(inp.loan, inp.loanRate, inp.loanYears * 12);
+
+  const monthlyRentInterest = inp.rentLoan * inp.rentRate / 12;
+  const monthlySurplus = Math.max(payment - monthlyRentInterest, 0);
+  // 취득세는 매수 시점에 나가는 현금이므로 매매 쪽 초기 자기자본에 더한다.
+  const buyEquity = inp.price - inp.loan + inp.acqTax;
+  const lumpSum = Math.max(buyEquity - (inp.deposit - inp.rentLoan), 0);
+
+  const monthlyRate = inp.loanRate / 12;
+  let totalInterest = 0, totalPrincipal = 0;
+
+  const buySeries = [inp.price - inp.loan - inp.maintenance];
+  for (let t = 1; t <= inp.years; t++) {
+    for (let m = 0; m < 12; m++) {
+      const balance = inp.loan - totalPrincipal;
+      const interest = balance * monthlyRate;
+      totalInterest += interest;
+      totalPrincipal += payment - interest;
+    }
+    const futureHome = inp.price * Math.pow(1 + inp.homeGrowth, t);
+    buySeries.push(futureHome - (inp.loan - totalPrincipal) - inp.maintenance);
+  }
+
+  const leaseSeries = [];
+  const lease = leaseSimulate(inp, inp.investRate, monthlySurplus, lumpSum, leaseSeries);
+
+  const futureHomeValue = inp.price * Math.pow(1 + inp.homeGrowth, inp.years);
+  const remainLoan = inp.loan - totalPrincipal;
+  return {
+    payment,
+    buy: {
+      futureHomeValue,
+      remainLoan,
+      totalInterest,
+      totalPrincipal,
+      buyEquity,
+      totalAssets: buySeries[inp.years],
+    },
+    lease: {
+      lumpSum,
+      lumpSumFuture: lease.poolLump,
+      monthlyRentInterest,
+      monthlySurplus,
+      surplusFuture: lease.poolContrib,
+      rentInterest: monthlyRentInterest * inp.years * 12,
+      finalDeposit: lease.deposit,
+      depositRaised: lease.depositRaised,
+      shortfallYear: lease.shortfallYear,
+      totalAssets: lease.totalAssets,
+    },
+    buySeries,
+    leaseSeries,
+  };
+}
+
+/* ===================== 숫자 포맷 ===================== */
+
+const fmtWon = (x) => Math.round(x).toLocaleString("ko-KR") + "원";
+
+/* 조/억/만 단위 표기 (만원 단위로 반올림). 예: 1,500,000,000 → "15억 원" */
+function koreanMoney(x) {
+  const sign = x < 0 ? "−" : "";
+  const abs = Math.abs(x);
+  if (abs < 5000) return sign + Math.round(abs).toLocaleString("ko-KR") + "원";
+  let man = Math.round(abs / 1e4);
+  const jo = Math.floor(man / 1e8);
+  const eok = Math.floor((man % 1e8) / 1e4);
+  man = man % 1e4;
+  const parts = [];
+  if (jo) parts.push(jo.toLocaleString("ko-KR") + "조");
+  if (eok) parts.push(eok.toLocaleString("ko-KR") + "억");
+  if (man) parts.push(man.toLocaleString("ko-KR") + "만");
+  return sign + parts.join(" ") + " 원";
+}
+
+/* 축 눈금·막대 라벨용 짧은 표기. 예: 2,192,129,720 → "21.9억" */
+function shortMoney(x) {
+  const sign = x < 0 ? "−" : "";
+  const abs = Math.abs(x);
+  if (abs === 0) return "0";
+  if (abs >= 1e12) return sign + trimNum(abs / 1e12) + "조";
+  if (abs >= 1e8) return sign + trimNum(abs / 1e8) + "억";
+  if (abs >= 1e4) return sign + trimNum(abs / 1e4) + "만";
+  return sign + Math.round(abs).toLocaleString("ko-KR");
+}
+function trimNum(v) {
+  const s = v >= 100 ? Math.round(v).toString() : (Math.round(v * 10) / 10).toString();
+  return s.replace(/\.0$/, "");
+}
+
+/* ===================== 입력 처리 ===================== */
+
+const $ = (id) => document.getElementById(id);
+const parseMoney = (el) => Number((el.value.match(/\d/g) || ["0"]).join(""));
+
+/* 취득세 자동 계산 모드일 때 금액 칸을 채우고, 적용된 세율을 안내한다. */
+function syncAcquisitionTax() {
+  const auto = $("taxMode").value === "auto";
+  const field = $("acqTax");
+  field.readOnly = auto;
+  $("taxChecks").classList.toggle("off", !auto);
+
+  if (auto) {
+    const price = parseMoney($("price"));
+    const tax = acquisitionTax(price, $("over85").checked, $("firstTime").checked);
+    field.value = Math.round(tax).toLocaleString("ko-KR");
+    const pct = price > 0 ? (tax / price * 100).toFixed(2) : "0.00";
+    $("taxHint").textContent = "집값의 " + pct + "% — 취득세·지방교육세" +
+      ($("over85").checked ? "·농어촌특별세" : "") + " 합계";
+  } else {
+    $("taxHint").textContent = "다주택·감면 대상 등은 금액을 직접 입력하세요.";
+  }
+  updateMoneyHint(field);
+}
+
+function readInputs() {
+  const num = (id) => Number($(id).value);
+  const inp = {
+    price: parseMoney($("price")),
+    loan: parseMoney($("loan")),
+    loanRate: num("loanRate") / 100,
+    loanYears: num("loanYears"),
+    homeGrowth: num("homeGrowth") / 100,
+    maintenance: parseMoney($("maintenance")),
+    acqTax: parseMoney($("acqTax")),
+    deposit: parseMoney($("deposit")),
+    rentLoan: parseMoney($("rentLoan")),
+    rentRate: num("rentRate") / 100,
+    renewYears: num("renewYears"),
+    depositHike: num("depositHike") / 100,
+    years: num("years"),
+    investRate: num("investRate") / 100,
+  };
+  let error = "";
+  if (!Number.isFinite(inp.loanRate) || !Number.isFinite(inp.homeGrowth) ||
+      !Number.isFinite(inp.rentRate) || !Number.isFinite(inp.investRate) ||
+      !Number.isFinite(inp.depositHike) || !Number.isInteger(inp.renewYears) ||
+      !Number.isInteger(inp.years) || !Number.isInteger(inp.loanYears) ||
+      inp.years < 1 || inp.loanYears < 1 || inp.renewYears < 1) {
+    error = "숫자 입력값을 확인하세요.";
+  } else if (inp.years > inp.loanYears) {
+    error = "시뮬레이션 기간은 상환기간 이하여야 합니다.";
+  }
+  return { inp, error };
+}
+
+function updateMoneyHint(el) {
+  const hint = $(el.id + "-hint");
+  if (hint) hint.textContent = koreanMoney(parseMoney(el));
+}
+
+/* 취득세 자동 계산에 영향을 주는 입력들 */
+const TAX_INPUTS = ["price", "taxMode", "over85", "firstTime"];
+
+document.querySelectorAll("#form input, #form select").forEach((el) => {
+  const onChange = () => {
+    if (el.dataset.money !== undefined) updateMoneyHint(el);
+    if (TAX_INPUTS.includes(el.id)) syncAcquisitionTax();
+    recompute();
+  };
+  el.addEventListener("input", onChange);   // select·checkbox도 input 이벤트를 발생시킨다
+  if (el.dataset.money !== undefined) {
+    el.addEventListener("blur", () => {
+      el.value = parseMoney(el).toLocaleString("ko-KR");
+    });
+  }
+});
+
+/* ===================== 결과 렌더링 ===================== */
+
+let current = null; // { inp, result }
+
+function recompute() {
+  const { inp, error } = readInputs();
+  $("years-error").textContent = error;
+  if (error) {
+    $("results").classList.add("stale");
+    return;
+  }
+  $("results").classList.remove("stale");
+  current = { inp, result: simulate(inp) };
+  renderVerdict();
+  renderKpis();
+  renderDetails();
+  renderTable();
+  renderChart();
+  renderSensitivity();
+  scheduleHashSync();
+}
+
+function renderVerdict() {
+  const { inp, result: r } = current;
+  const diff = r.buy.totalAssets - r.lease.totalAssets;
+
+  $("vLabel").textContent = inp.years + "년 후 총자산 비교";
+  const dot = $("vDot");
+  if (diff === 0) {
+    dot.className = "key-dot";
+    dot.style.display = "none";
+    $("vWho").textContent = "";
+    $("vAmount").textContent = "동일";
+    $("vTail").textContent = "두 시나리오의 총자산이 같습니다";
+  } else {
+    const buyWins = diff > 0;
+    dot.style.display = "";
+    dot.className = "key-dot " + (buyWins ? "buy" : "lease");
+    $("vWho").textContent = buyWins ? "매매가" : "전세가";
+    $("vAmount").textContent = koreanMoney(Math.abs(diff));
+    $("vTail").textContent = "더 유리";
+  }
+  $("vSub").textContent =
+    "매매 총자산 " + fmtWon(r.buy.totalAssets) +
+    " · 전세 총자산 " + fmtWon(r.lease.totalAssets) +
+    (diff !== 0 ? " · 차이 " + fmtWon(Math.abs(diff)) : "");
+
+  const maxV = Math.max(r.buy.totalAssets, r.lease.totalAssets, 1);
+  const pct = (v) => (Math.max(v, 0) / maxV * 78).toFixed(2) + "%";
+  $("barBuy").style.width = pct(r.buy.totalAssets);
+  $("barLease").style.width = pct(r.lease.totalAssets);
+  $("barBuyVal").textContent = shortMoney(r.buy.totalAssets) + " 원";
+  $("barLeaseVal").textContent = shortMoney(r.lease.totalAssets) + " 원";
+
+  const warn = $("modelWarn");
+  warn.textContent = "";
+  if (r.lease.shortfallYear) {
+    warn.textContent = "참고: " + r.lease.shortfallYear + "년차 재계약 시점에 보증금 인상분을 낼 투자 자금이 부족합니다. " +
+      "부족분은 마이너스 잔고로 처리했으니, 실제로는 대출을 더 받거나 이사해야 하는 상황입니다.";
+  } else if (r.buy.buyEquity < (inp.deposit - inp.rentLoan)) {
+    warn.textContent = "참고: 매매 자기자본(집값−대출+취득세)이 전세 자기자본(보증금−전세대출)보다 적습니다. " +
+      "이 모델은 매수 후 남는 목돈을 투자한다고 가정하므로, 이 경우 전세 쪽 결과가 실제보다 유리하게 계산될 수 있습니다.";
+  } else if (r.lease.monthlySurplus === 0) {
+    warn.textContent = "참고: 매월 전세대출 이자가 원리금 상환액 이상이라 적립식 투자액이 0원으로 처리됐습니다. " +
+      "월 현금지출이 같다는 모델 가정이 성립하지 않는 구간입니다.";
+  }
+}
+
+function renderKpis() {
+  const r = current.result;
+  $("kPayment").textContent = fmtWon(r.payment);
+  $("kRentInt").textContent = fmtWon(r.lease.monthlyRentInterest);
+  $("kSurplus").textContent = fmtWon(r.lease.monthlySurplus);
+}
+
+function detailRow(label, value, cls) {
+  const row = document.createElement("div");
+  row.className = "d-row" + (cls ? " " + cls : "");
+  const l = document.createElement("span");
+  l.className = "d-label";
+  l.textContent = label;
+  const v = document.createElement("span");
+  v.className = "d-val";
+  v.textContent = value;
+  row.append(l, v);
+  return row;
+}
+
+function renderDetails() {
+  const { inp, result: r } = current;
+  const N = inp.years;
+  const signedMoney = (x) => (x > 0 ? "+" : "") + koreanMoney(x);
+
+  $("buyTitle").textContent = "매매 · " + N + "년 후";
+  const b = $("buyDetail");
+  b.replaceChildren(
+    detailRow("미래 집값", signedMoney(r.buy.futureHomeValue)),
+    detailRow("  (상승분 " + shortMoney(r.buy.futureHomeValue - inp.price) + ", " +
+      (inp.price > 0 ? ((r.buy.futureHomeValue - inp.price) / inp.price * 100).toFixed(1) : "0") + "%)", "", "ref"),
+    detailRow("남은 대출원금", signedMoney(-r.buy.remainLoan)),
+    detailRow("기타 유지비", signedMoney(-inp.maintenance)),
+    detailRow("총자산", koreanMoney(r.buy.totalAssets), "total"),
+    detailRow("(참고) 초기 자기자본 (집값−대출+취득세)", koreanMoney(r.buy.buyEquity), "ref"),
+    detailRow("(참고) 취득세 — 매수 시 지출", koreanMoney(inp.acqTax), "ref"),
+    detailRow("(참고) 갚은 대출원금", koreanMoney(r.buy.totalPrincipal), "ref"),
+    detailRow("(참고) 누적 대출이자", koreanMoney(r.buy.totalInterest), "ref"),
+  );
+
+  $("leaseTitle").textContent = "전세 · " + N + "년 후";
+  const hiked = r.lease.depositRaised > 0;
+  const l = $("leaseDetail");
+  l.replaceChildren(
+    detailRow(hiked ? "전세보증금 (인상 후)" : "전세보증금", signedMoney(r.lease.finalDeposit)),
+    ...(hiked ? [detailRow("  (인상 총액 " + shortMoney(r.lease.depositRaised) + " 원, " +
+      inp.renewYears + "년마다 " + (inp.depositHike * 100).toFixed(1) + "%)", "", "ref")] : []),
+    detailRow("전세대출 상환", signedMoney(-inp.rentLoan)),
+    detailRow("일시불 투자 잔고", signedMoney(r.lease.lumpSumFuture)),
+    detailRow("  (투자원금 " + shortMoney(r.lease.lumpSum) + " 원 — 매매 자기자본과의 차액)", "", "ref"),
+    detailRow("적립식 투자 잔고", signedMoney(r.lease.surplusFuture)),
+    detailRow("총자산", koreanMoney(r.lease.totalAssets), "total"),
+    detailRow("(참고) 누적 전세대출 이자 (적립액 반영)", koreanMoney(r.lease.rentInterest), "ref"),
+  );
+}
+
+function renderTable() {
+  const { result: r } = current;
+  const tbody = $("dataTable").querySelector("tbody");
+  tbody.replaceChildren();
+  for (let t = 0; t < r.buySeries.length; t++) {
+    const tr = document.createElement("tr");
+    const cells = [
+      t + "년",
+      fmtWon(r.buySeries[t]),
+      fmtWon(r.leaseSeries[t]),
+      fmtWon(r.buySeries[t] - r.leaseSeries[t]),
+    ];
+    cells.forEach((c, i) => {
+      const td = document.createElement("td");
+      td.textContent = c;
+      if (i === 0) td.setAttribute("scope", "row");
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  }
+}
+
+/* ===================== 라인 차트 ===================== */
+
+const NS = "http://www.w3.org/2000/svg";
+const svgEl = (tag, attrs) => {
+  const el = document.createElementNS(NS, tag);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  return el;
+};
+
+function niceStep(rough) {
+  const pow = Math.pow(10, Math.floor(Math.log10(rough)));
+  for (const m of [1, 2, 2.5, 5, 10]) {
+    if (m * pow >= rough) return m * pow;
+  }
+  return 10 * pow;
+}
+
+const chart = { hoverIdx: -1, geom: null };
+
+function renderChart() {
+  const wrap = $("chartWrap");
+  const { inp, result: r } = current;
+  const N = inp.years;
+
+  wrap.querySelectorAll("svg").forEach((s) => s.remove());
+  chart.hoverIdx = -1;
+  hideTooltip();
+
+  const W = Math.max(wrap.clientWidth || 640, 320);
+  const H = 300;
+  const ML = 58, MR = 64, MT = 14, MB = 30;
+  const plotW = W - ML - MR, plotH = H - MT - MB;
+
+  const all = r.buySeries.concat(r.leaseSeries);
+  let lo = Math.min(0, ...all), hi = Math.max(0, ...all);
+  if (hi === lo) hi = lo + 1;
+  const step = niceStep((hi - lo) / 4);
+  lo = Math.floor(lo / step) * step;
+  hi = Math.ceil(hi / step) * step;
+
+  const x = (t) => ML + (N === 0 ? 0 : t / N) * plotW;
+  const y = (v) => MT + (1 - (v - lo) / (hi - lo)) * plotH;
+
+  const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H, "aria-hidden": "true" });
+
+  const css = getComputedStyle(document.documentElement);
+  const C = {
+    grid: css.getPropertyValue("--grid").trim(),
+    baseline: css.getPropertyValue("--baseline").trim(),
+    muted: css.getPropertyValue("--muted").trim(),
+    text: css.getPropertyValue("--text-secondary").trim(),
+    surface: css.getPropertyValue("--surface-1").trim(),
+    buy: css.getPropertyValue("--series-buy").trim(),
+    lease: css.getPropertyValue("--series-lease").trim(),
+  };
+
+  // 가로 그리드 + y축 눈금
+  for (let v = lo; v <= hi + step / 2; v += step) {
+    const yy = y(v);
+    svg.append(svgEl("line", {
+      x1: ML, x2: ML + plotW, y1: yy, y2: yy,
+      stroke: Math.abs(v) < step / 2 ? C.baseline : C.grid, "stroke-width": 1,
+    }));
+    const label = svgEl("text", {
+      x: ML - 8, y: yy + 4, "text-anchor": "end",
+      "font-size": 11.5, fill: C.muted,
+    });
+    label.textContent = shortMoney(v);
+    svg.append(label);
+  }
+
+  // x축 눈금 (연차)
+  const xStep = Math.max(1, Math.ceil(N / 10));
+  for (let t = 0; t <= N; t += xStep) {
+    const label = svgEl("text", {
+      x: x(t), y: MT + plotH + 20, "text-anchor": "middle",
+      "font-size": 11.5, fill: C.muted,
+    });
+    label.textContent = t + "년";
+    svg.append(label);
+  }
+
+  // 라인 + 끝점
+  const pts = (series) => series.map((v, t) => `${x(t)},${y(v)}`).join(" ");
+  for (const [series, color] of [[r.buySeries, C.buy], [r.leaseSeries, C.lease]]) {
+    svg.append(svgEl("polyline", {
+      points: pts(series), fill: "none", stroke: color,
+      "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round",
+    }));
+  }
+
+  // 호버 레이어 (렌더 순서: 크로스헤어 → 호버 점 → 끝점/라벨)
+  const cross = svgEl("line", { y1: MT, y2: MT + plotH, stroke: C.baseline, "stroke-width": 1, visibility: "hidden" });
+  svg.append(cross);
+  const hoverDots = [C.buy, C.lease].map((color) => {
+    const d = svgEl("circle", { r: 4.5, fill: color, stroke: C.surface, "stroke-width": 2, visibility: "hidden" });
+    svg.append(d);
+    return d;
+  });
+
+  const endBuyY = y(r.buySeries[N]), endLeaseY = y(r.leaseSeries[N]);
+  for (const [yy, color] of [[endBuyY, C.buy], [endLeaseY, C.lease]]) {
+    svg.append(svgEl("circle", { cx: x(N), cy: yy, r: 4.5, fill: color, stroke: C.surface, "stroke-width": 2 }));
+  }
+  // 끝 직접 라벨 — 겹치면 생략하고 범례가 대신한다
+  if (Math.abs(endBuyY - endLeaseY) >= 15) {
+    for (const [yy, name] of [[endBuyY, "매매"], [endLeaseY, "전세"]]) {
+      const label = svgEl("text", { x: x(N) + 9, y: yy + 4, "font-size": 12, "font-weight": 600, fill: C.text });
+      label.textContent = name;
+      svg.append(label);
+    }
+  }
+
+  wrap.append(svg);
+  chart.geom = { x, y, N, ML, MT, plotW, plotH, W, H, cross, hoverDots, svg };
+
+  const hit = svgEl("rect", { x: ML - 10, y: MT, width: plotW + 20, height: plotH, fill: "transparent" });
+  hit.style.cursor = "crosshair";
+  hit.addEventListener("pointermove", (e) => {
+    const rect = svg.getBoundingClientRect();
+    const px = (e.clientX - rect.left) * (W / rect.width);
+    setHover(Math.round((px - ML) / plotW * N), e.clientY - wrap.getBoundingClientRect().top);
+  });
+  hit.addEventListener("pointerleave", () => setHover(-1));
+  svg.append(hit);
+}
+
+function setHover(idx, pointerY) {
+  const g = chart.geom;
+  if (!g || !current) return;
+  idx = idx < 0 ? -1 : Math.max(0, Math.min(g.N, idx));
+  chart.hoverIdx = idx;
+  const { result: r } = current;
+
+  if (idx === -1) {
+    g.cross.setAttribute("visibility", "hidden");
+    g.hoverDots.forEach((d) => d.setAttribute("visibility", "hidden"));
+    hideTooltip();
+    return;
+  }
+  const xx = g.x(idx);
+  g.cross.setAttribute("x1", xx);
+  g.cross.setAttribute("x2", xx);
+  g.cross.setAttribute("visibility", "visible");
+  [r.buySeries[idx], r.leaseSeries[idx]].forEach((v, i) => {
+    g.hoverDots[i].setAttribute("cx", xx);
+    g.hoverDots[i].setAttribute("cy", g.y(v));
+    g.hoverDots[i].setAttribute("visibility", "visible");
+  });
+  showTooltip(idx, xx, pointerY);
+}
+
+function showTooltip(idx, svgX, pointerY) {
+  const tt = $("tooltip");
+  const wrap = $("chartWrap");
+  const { result: r } = current;
+  const css = getComputedStyle(document.documentElement);
+
+  tt.replaceChildren();
+  const title = document.createElement("div");
+  title.className = "tt-title";
+  title.textContent = idx === 0 ? "시작 시점" : idx + "년 후";
+  tt.append(title);
+
+  const rows = [
+    [css.getPropertyValue("--series-buy").trim(), r.buySeries[idx], "매매"],
+    [css.getPropertyValue("--series-lease").trim(), r.leaseSeries[idx], "전세"],
+  ];
+  for (const [color, v, name] of rows) {
+    const row = document.createElement("div");
+    row.className = "tt-row";
+    const key = document.createElement("span");
+    key.className = "tt-key";
+    key.style.background = color;
+    const val = document.createElement("span");
+    val.className = "tt-val";
+    val.textContent = koreanMoney(v);
+    const nm = document.createElement("span");
+    nm.className = "tt-name";
+    nm.textContent = name;
+    row.append(key, val, nm);
+    tt.append(row);
+  }
+  const d = r.buySeries[idx] - r.leaseSeries[idx];
+  const diff = document.createElement("div");
+  diff.className = "tt-diff";
+  diff.textContent = "차이 " + (d >= 0 ? "매매 +" : "전세 +") + koreanMoney(Math.abs(d));
+  tt.append(diff);
+
+  const rect = chart.geom.svg.getBoundingClientRect();
+  const scale = rect.width / chart.geom.W;
+  const px = svgX * scale;
+  tt.style.visibility = "visible";
+  const ttW = tt.offsetWidth;
+  const left = px + 14 + ttW > wrap.clientWidth ? px - ttW - 14 : px + 14;
+  tt.style.left = Math.max(0, left) + "px";
+  tt.style.top = Math.max(0, Math.min((pointerY ?? 40) - 20, wrap.clientHeight - tt.offsetHeight - 10)) + "px";
+}
+
+function hideTooltip() {
+  $("tooltip").style.visibility = "hidden";
+}
+
+/* ===================== 민감도 분석 (손익분기 + 히트맵) ===================== */
+
+function hexToRgb(hex) {
+  const h = hex.replace("#", "");
+  const s = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  return [0, 2, 4].map((i) => parseInt(s.slice(i, i + 2), 16));
+}
+/* t만큼 b(표면색) 쪽으로 섞는다 — 히트맵 명도 램프 생성용 */
+function mixHex(a, b, t) {
+  const ra = hexToRgb(a), rb = hexToRgb(b);
+  return "#" + ra.map((v, i) => Math.round(v + (rb[i] - v) * t).toString(16).padStart(2, "0")).join("");
+}
+const isDarkSurface = (hex) => {
+  const [r, g, b] = hexToRgb(hex);
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 < 0.5;
+};
+
+function heatPalette() {
+  const css = getComputedStyle(document.documentElement);
+  const surface = css.getPropertyValue("--surface-1").trim();
+  return {
+    surface,
+    buy: css.getPropertyValue("--series-buy").trim(),
+    lease: css.getPropertyValue("--series-lease").trim(),
+    neutral: isDarkSurface(surface) ? "#383835" : "#f0efec",
+  };
+}
+
+/* 다이버징 스케일: 각 팔은 시리즈 색을 표면색과 섞은 4단계 명도 램프, 가운데는 중립 회색 */
+function heatColor(d, maxAbs, P) {
+  if (maxAbs <= 0) return P.neutral;
+  const t = Math.abs(d) / maxAbs;
+  if (t < 0.02) return P.neutral;
+  const mix = t < 0.25 ? 0.72 : t < 0.5 ? 0.5 : t < 0.75 ? 0.26 : 0;
+  return mixHex(d > 0 ? P.buy : P.lease, P.surface, mix);
+}
+
+function renderSensitivity() {
+  const { inp, result: r } = current;
+  const N = inp.years;
+  const buyAt = (g) => inp.price * Math.pow(1 + g, N) - r.buy.remainLoan - inp.maintenance;
+  const leaseAt = (rr) =>
+    leaseSimulate(inp, rr, r.lease.monthlySurplus, r.lease.lumpSum, null).totalAssets;
+  const pctText = (x) => (x * 100).toFixed(1) + "%";
+
+  // 손익분기 집값 상승률: buyAt(g) = 전세 총자산의 닫힌 해
+  const rhs = (r.lease.totalAssets + r.buy.remainLoan + inp.maintenance) / inp.price;
+  const beG = inp.price > 0 && rhs > 0 ? Math.pow(rhs, 1 / N) - 1 : null;
+  if (beG !== null) {
+    $("beGrowth").textContent = "연 " + pctText(beG);
+    $("beGrowthNote").textContent = "집값 상승률이 이보다 높으면 매매 유리 (현재 " + pctText(inp.homeGrowth) + ")";
+  } else {
+    $("beGrowth").textContent = "—";
+    $("beGrowthNote").textContent = "현재 조건에서는 손익분기가 없습니다";
+  }
+
+  // 손익분기 투자수익률: leaseAt(rr) = 매매 총자산 (단조증가 → 이분법)
+  let beR = null, beRNote = "";
+  if (r.lease.lumpSum > 0 || r.lease.monthlySurplus > 0) {
+    const f = (x) => leaseAt(x) - r.buy.totalAssets;
+    let lo = -0.5, hi = 1.0;
+    if (f(lo) >= 0) beRNote = "연 −50%로 잡아도 전세가 유리한 구간입니다";
+    else if (f(hi) <= 0) beRNote = "연 100%로 잡아도 매매가 유리한 구간입니다";
+    else {
+      for (let i = 0; i < 60; i++) {
+        const mid = (lo + hi) / 2;
+        if (f(mid) < 0) lo = mid; else hi = mid;
+      }
+      beR = (lo + hi) / 2;
+    }
+  } else {
+    beRNote = "투자할 여유 현금이 없어 수익률의 영향이 없습니다";
+  }
+  if (beR !== null) {
+    $("beInvest").textContent = "연 " + pctText(beR);
+    $("beInvestNote").textContent = "투자수익률이 이보다 높으면 전세 유리 (현재 " + pctText(inp.investRate) + ")";
+  } else {
+    $("beInvest").textContent = "—";
+    $("beInvestNote").textContent = beRNote;
+  }
+
+  renderHeatmap(buyAt, leaseAt);
+}
+
+function renderHeatmap(buyAt, leaseAt) {
+  const { inp } = current;
+  const P = heatPalette();
+  const g100 = inp.homeGrowth * 100, r100 = inp.investRate * 100;
+  const gMin = Math.min(0, Math.floor(g100) - 2), gMax = Math.max(10, Math.ceil(g100) + 2);
+  const rMin = Math.min(0, Math.floor(r100 / 2) * 2 - 4), rMax = Math.max(20, Math.ceil(r100 / 2) * 2 + 4);
+  const gs = [], rs = [];
+  for (let g = gMin; g <= gMax; g++) gs.push(g);
+  for (let rr = rMin; rr <= rMax; rr += 2) rs.push(rr);
+
+  const buyVals = gs.map((g) => buyAt(g / 100));
+  const leaseVals = rs.map((rr) => leaseAt(rr / 100));
+  let maxAbs = 0;
+  const diffAt = (ri, gi) => buyVals[gi] - leaseVals[ri];
+  rs.forEach((_, ri) => gs.forEach((_, gi) => { maxAbs = Math.max(maxAbs, Math.abs(diffAt(ri, gi))); }));
+
+  const wrap = $("hmWrap");
+  wrap.querySelectorAll(".hm-grid, .hm-marker").forEach((el) => el.remove());
+  const grid = document.createElement("div");
+  grid.className = "hm-grid";
+  grid.style.gridTemplateColumns = "auto repeat(" + gs.length + ", 1fr)";
+
+  // 위에서 아래로 = 수익률 높음 → 낮음
+  for (let ri = rs.length - 1; ri >= 0; ri--) {
+    const yl = document.createElement("span");
+    yl.className = "hm-ylabel";
+    yl.textContent = (rs[ri] - rMin) % 4 === 0 ? rs[ri] + "%" : "";
+    grid.appendChild(yl);
+    gs.forEach((g, gi) => {
+      const d = diffAt(ri, gi);
+      const cell = document.createElement("div");
+      cell.className = "hm-cell";
+      cell.style.background = heatColor(d, maxAbs, P);
+      cell.dataset.g = g;
+      cell.dataset.r = rs[ri];
+      cell.dataset.d = d;
+      grid.appendChild(cell);
+    });
+  }
+  // x축 라벨 행
+  grid.appendChild(document.createElement("span"));
+  gs.forEach((g) => {
+    const xl = document.createElement("span");
+    xl.className = "hm-xlabel";
+    xl.textContent = (g - gMin) % 2 === 0 ? g + "%" : "";
+    grid.appendChild(xl);
+  });
+  wrap.appendChild(grid);
+
+  // 현재 입력값 마커 (셀 반 칸을 값의 좌우 경계로 보고 연속 좌표로 배치)
+  const cells = grid.querySelectorAll(".hm-cell");
+  if (cells.length) {
+    const first = cells[0], last = cells[cells.length - 1];
+    const x0 = first.offsetLeft, x1 = last.offsetLeft + last.offsetWidth;
+    const y0 = first.offsetTop, y1 = last.offsetTop + last.offsetHeight;
+    const xf = (g100 - (gMin - 0.5)) / ((gMax + 0.5) - (gMin - 0.5));
+    const yf = 1 - (r100 - (rMin - 1)) / ((rMax + 1) - (rMin - 1));
+    const marker = document.createElement("div");
+    marker.className = "hm-marker";
+    marker.style.left = (x0 + xf * (x1 - x0)) + "px";
+    marker.style.top = (y0 + yf * (y1 - y0)) + "px";
+    wrap.appendChild(marker);
+  }
+
+  // 범례: 전세 강→약, 중립, 매매 약→강
+  const legend = $("hmLegend");
+  legend.replaceChildren();
+  const addLab = (text) => {
+    const s = document.createElement("span");
+    s.className = "lab";
+    s.textContent = text;
+    legend.appendChild(s);
+  };
+  const addSw = (color) => {
+    const s = document.createElement("span");
+    s.className = "sw";
+    s.style.background = color;
+    legend.appendChild(s);
+  };
+  addLab("전세 유리");
+  [0, 0.26, 0.5, 0.72].forEach((t) => addSw(mixHex(P.lease, P.surface, t)));
+  addSw(P.neutral);
+  [0.72, 0.5, 0.26, 0].forEach((t) => addSw(mixHex(P.buy, P.surface, t)));
+  addLab("매매 유리");
+
+  // 표 뷰
+  const table = $("hmTable");
+  const thead = table.querySelector("thead");
+  const tbody = table.querySelector("tbody");
+  thead.replaceChildren();
+  tbody.replaceChildren();
+  const hr = document.createElement("tr");
+  const corner = document.createElement("th");
+  corner.textContent = "수익률 \\ 상승률";
+  hr.appendChild(corner);
+  gs.forEach((g) => {
+    const th = document.createElement("th");
+    th.setAttribute("scope", "col");
+    th.textContent = g + "%";
+    hr.appendChild(th);
+  });
+  thead.appendChild(hr);
+  for (let ri = rs.length - 1; ri >= 0; ri--) {
+    const tr = document.createElement("tr");
+    const th = document.createElement("td");
+    th.textContent = rs[ri] + "%";
+    tr.appendChild(th);
+    gs.forEach((_, gi) => {
+      const d = diffAt(ri, gi);
+      const td = document.createElement("td");
+      td.textContent = (d > 0 ? "+" : "") + shortMoney(d);
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  }
+}
+
+/* 히트맵 셀 툴팁 (셀 자체가 히트 타깃) */
+$("hmWrap").addEventListener("pointermove", (e) => {
+  const cell = e.target.closest(".hm-cell");
+  const tt = $("hmTooltip");
+  if (!cell) { tt.style.visibility = "hidden"; return; }
+  const d = Number(cell.dataset.d);
+  tt.replaceChildren();
+  const val = document.createElement("div");
+  val.className = "tt-row";
+  const strong = document.createElement("span");
+  strong.className = "tt-val";
+  strong.textContent = (d >= 0 ? "매매 +" : "전세 +") + koreanMoney(Math.abs(d));
+  val.appendChild(strong);
+  const sub = document.createElement("div");
+  sub.className = "tt-title";
+  sub.style.marginTop = "4px";
+  sub.textContent = "상승률 " + cell.dataset.g + "% · 수익률 " + cell.dataset.r + "%";
+  tt.append(val, sub);
+
+  const wrap = $("hmWrap");
+  tt.style.visibility = "visible";
+  const x = cell.offsetLeft + cell.offsetWidth + 10;
+  const left = x + tt.offsetWidth > wrap.clientWidth ? cell.offsetLeft - tt.offsetWidth - 10 : x;
+  tt.style.left = Math.max(0, left) + "px";
+  tt.style.top = Math.max(0, cell.offsetTop - tt.offsetHeight / 2 + 10) + "px";
+});
+$("hmWrap").addEventListener("pointerleave", () => { $("hmTooltip").style.visibility = "hidden"; });
+
+/* ===================== URL 시나리오 공유 ===================== */
+
+const HASH_KEYS = [
+  ["price", "price", "money"], ["loan", "loan", "money"], ["loanRate", "loanRate", "num"],
+  ["loanYears", "loanYears", "num"], ["growth", "homeGrowth", "num"], ["maint", "maintenance", "money"],
+  ["taxMode", "taxMode", "str"], ["over85", "over85", "bool"], ["first", "firstTime", "bool"],
+  ["acqTax", "acqTax", "money"],
+  ["deposit", "deposit", "money"], ["rentLoan", "rentLoan", "money"], ["rentRate", "rentRate", "num"],
+  ["renew", "renewYears", "num"], ["hike", "depositHike", "num"],
+  ["years", "years", "num"], ["invest", "investRate", "num"],
+];
+const HASH_DEFAULTS = {
+  price: 1500000000, loan: 1000000000, loanRate: 3, loanYears: 50, growth: 7.5, maint: 0,
+  taxMode: "auto", over85: 0, first: 0, acqTax: null,
+  deposit: 500000000, rentLoan: 120000000, rentRate: 2.5, renew: 2, hike: 5,
+  years: 10, invest: 15,
+};
+
+function readField(id, kind) {
+  const el = $(id);
+  if (kind === "money") return parseMoney(el);
+  if (kind === "bool") return el.checked ? 1 : 0;
+  if (kind === "str") return el.value;
+  return Number(el.value);
+}
+
+function scenarioHash() {
+  const qs = new URLSearchParams();
+  const manual = $("taxMode").value === "manual";
+  for (const [key, id, kind] of HASH_KEYS) {
+    // 자동 계산 모드의 취득세는 집값에서 파생되므로 저장하지 않는다.
+    if (key === "acqTax" && !manual) continue;
+    const v = readField(id, kind);
+    if (kind !== "str" && !Number.isFinite(v)) continue;
+    if (v !== HASH_DEFAULTS[key]) qs.set(key, String(v));
+  }
+  return qs.toString();
+}
+
+function scenarioUrl() {
+  const s = scenarioHash();
+  return location.href.split("#")[0] + (s ? "#" + s : "");
+}
+
+let hashSyncTimer = 0;
+let applyingHash = false;
+function scheduleHashSync() {
+  if (applyingHash) return;
+  clearTimeout(hashSyncTimer);
+  hashSyncTimer = setTimeout(() => {
+    try { history.replaceState(null, "", scenarioUrl()); } catch (e) { /* file:// 등 제약 시 무시 */ }
+  }, 400);
+}
+
+function applyHash() {
+  if (location.hash.length < 2) return;
+  const qs = new URLSearchParams(location.hash.slice(1));
+  for (const [key, id, kind] of HASH_KEYS) {
+    if (!qs.has(key)) continue;
+    const raw = qs.get(key);
+    if (kind === "str") {
+      // 링크로 들어온 값이므로 허용된 선택지인지 확인한다.
+      if ([...$(id).options].some((o) => o.value === raw)) $(id).value = raw;
+      continue;
+    }
+    const v = Number(raw);
+    if (!Number.isFinite(v)) continue;
+    if (kind === "money") $(id).value = Math.max(0, Math.round(v)).toLocaleString("ko-KR");
+    else if (kind === "bool") $(id).checked = v === 1;
+    else $(id).value = String(v);
+  }
+}
+
+window.addEventListener("hashchange", () => {
+  applyingHash = true;
+  applyHash();
+  syncAcquisitionTax();
+  document.querySelectorAll("#form input[data-money]").forEach(updateMoneyHint);
+  recompute();
+  applyingHash = false;
+});
+
+$("copyLink").addEventListener("click", async () => {
+  const url = scenarioUrl();
+  try { history.replaceState(null, "", url); } catch (e) { /* 무시 */ }
+  const btn = $("copyLink");
+  try {
+    await navigator.clipboard.writeText(url);
+    btn.textContent = "복사됨 ✓";
+  } catch (e) {
+    window.prompt("아래 링크를 복사하세요", url);
+    btn.textContent = "링크 표시됨";
+  }
+  setTimeout(() => { btn.textContent = "현재 시나리오 링크 복사"; }, 1600);
+});
+
+/* 키보드 탐색: ←/→로 연차 이동 */
+$("chartWrap").addEventListener("keydown", (e) => {
+  if (!chart.geom) return;
+  let idx = chart.hoverIdx;
+  if (e.key === "ArrowRight") idx = idx === -1 ? 0 : idx + 1;
+  else if (e.key === "ArrowLeft") idx = idx === -1 ? chart.geom.N : idx - 1;
+  else if (e.key === "Escape") idx = -1;
+  else return;
+  e.preventDefault();
+  setHover(idx, 40);
+});
+$("chartWrap").addEventListener("blur", () => setHover(-1));
+
+/* 반응형: 컨테이너 폭 변경 시 다시 그림 */
+let resizeRaf = 0;
+new ResizeObserver(() => {
+  cancelAnimationFrame(resizeRaf);
+  resizeRaf = requestAnimationFrame(() => { if (current) renderChart(); });
+}).observe($("chartWrap"));
+
+/* 다크/라이트 전환 시 색 다시 계산 */
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+  if (current) { renderChart(); renderSensitivity(); }
+});
+
+/* 초기 렌더 (URL에 저장된 시나리오가 있으면 먼저 적용) */
+applyHash();
+syncAcquisitionTax();
+document.querySelectorAll("#form input[data-money]").forEach(updateMoneyHint);
+recompute();
+</script>
+</body>
+</html>

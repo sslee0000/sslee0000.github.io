@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>스냅샷 · asset-flow</title>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <span class="brand">asset-flow</span>
+    
+    <a href="index.html" class="">현금흐름</a>
+    <a href="networth.html" class="">순자산</a>
+    <a href="flows.html" class="">흐름 관리</a>
+    <a href="snapshots.html" class="active">스냅샷</a>
+    <a href="accounts.html" class="">계정</a>
+  </nav>
+</header>
+<main>
+  <div class="demo-banner"><strong>정적 데모</strong> — 포트폴리오용으로 캡처한 스냅샷입니다. 숫자는 모두 가상이며, 서버가 없어 입력·수정은 동작하지 않습니다.<span class="en-note">Static snapshot for portfolio purposes. All figures are fictitious; forms are inert without a backend.</span></div>
+  
+  
+<h1>자산 스냅샷 입력</h1>
+<p class="muted">계정별 평가액을 기록합니다. 값을 비워 두면 그 계정은 저장하지 않습니다.
+대출은 잔액을 양수로 입력하세요 (순자산 계산 시 자동으로 차감).</p>
+
+
+
+<form class="card" method="post" action="/snapshots" style="display:block">
+  <div class="field" style="max-width:200px; margin-bottom:12px">
+    <label>기준일</label>
+    <input name="date" type="date" value="2026-07-26" required>
+  </div>
+  <div class="table-wrap" style="margin-bottom:12px">
+    <table>
+      <thead>
+        <tr>
+          <th>계정</th><th>분류</th><th class="num">최근 값</th>
+          <th>기준일</th><th class="num">새 평가액 (만원)</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        
+        <tr>
+          <td>CMA</td>
+          <td>현금성</td>
+          <td class="num">1,321만</td>
+          <td class="muted">2026-07-05</td>
+          <td class="num">
+            <input name="value_2" type="number" step="any"
+                   value="1320.9478"
+                   style="width:130px">
+          </td>
+        </tr>
+        
+        
+        <tr>
+          <td>주거래 예금</td>
+          <td>현금성</td>
+          <td class="num">3,545만</td>
+          <td class="muted">2026-07-05</td>
+          <td class="num">
+            <input name="value_1" type="number" step="any"
+                   value="3545.327"
+                   style="width:130px">
+          </td>
+        </tr>
+        
+        
+        <tr>
+          <td>증권계좌</td>
+          <td>투자</td>
+          <td class="num">6,690만</td>
+          <td class="muted">2026-07-05</td>
+          <td class="num">
+            <input name="value_3" type="number" step="any"
+                   value="6689.8632"
+                   style="width:130px">
+          </td>
+        </tr>
+        
+        
+        <tr>
+          <td>주택담보대출</td>
+          <td>대출</td>
+          <td class="num">2억 6,118만</td>
+          <td class="muted">2026-07-05</td>
+          <td class="num">
+            <input name="value_5" type="number" step="any"
+                   value="26118"
+                   style="width:130px">
+          </td>
+        </tr>
+        
+        
+        <tr>
+          <td>아파트</td>
+          <td>부동산</td>
+          <td class="num">6억 2,200만</td>
+          <td class="muted">2026-07-05</td>
+          <td class="num">
+            <input name="value_4" type="number" step="any"
+                   value="62200"
+                   style="width:130px">
+          </td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+  <button type="submit">저장</button>
+</form>
+
+
+<p class="muted">투자 계정에 <a href="accounts.html">보유 종목을 등록</a>하면 시세로 자동 평가할 수 있습니다.</p>
+
+
+
+
+</main>
+<script src="static/chart.js"></script>
+
+<script>
+(function () {
+  function flash() {
+    var b = document.querySelector('.demo-banner');
+    if (!b) return;
+    b.classList.remove('flash');
+    void b.offsetWidth;
+    b.classList.add('flash');
+    b.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  document.addEventListener('submit', function (e) { e.preventDefault(); flash(); }, true);
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href="#inert"]');
+    if (a) { e.preventDefault(); flash(); }
+  });
+})();
+</script>
+</body>
+</html>

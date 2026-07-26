@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>현금흐름 · asset-flow</title>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <span class="brand">asset-flow</span>
+    
+    <a href="index.html" class="active">현금흐름</a>
+    <a href="networth.html" class="">순자산</a>
+    <a href="flows.html" class="">흐름 관리</a>
+    <a href="snapshots.html" class="">스냅샷</a>
+    <a href="accounts.html" class="">계정</a>
+  </nav>
+</header>
+<main>
+  <div class="demo-banner"><strong>정적 데모</strong> — 포트폴리오용으로 캡처한 스냅샷입니다. 숫자는 모두 가상이며, 서버가 없어 입력·수정은 동작하지 않습니다.<span class="en-note">Static snapshot for portfolio purposes. All figures are fictitious; forms are inert without a backend.</span></div>
+  
+  
+<h1>현금흐름 프로젝션</h1>
+
+
+
+<div class="tiles">
+  <div class="tile">
+    <div class="label">현재 현금성 잔고</div>
+    <div class="value">4,866만</div>
+  </div>
+  <div class="tile">
+    <div class="label">이번 달 순현금흐름</div>
+    <div class="value pos">53만</div>
+  </div>
+  <div class="tile">
+    <div class="label">24개월 후 예상 잔고</div>
+    <div class="value ">4,388만</div>
+  </div>
+  <div class="tile">
+    <div class="label">순자산 (최근 스냅샷)</div>
+    <div class="value">4억 7,638만</div>
+  </div>
+</div>
+
+<div class="range-links">
+  기간:
+  
+  <a href="index-12.html" class="">12개월</a>
+  
+  <a href="index.html" class="active">24개월</a>
+  
+  <a href="index-36.html" class="">36개월</a>
+  
+</div>
+
+<figure class="chart">
+  <figcaption>월말 예상 현금 잔고 <span class="sub">등록된 흐름 기준, 만원</span></figcaption>
+  <div class="plot"></div>
+  <script type="application/json">{"type": "line", "labels": ["2026-07", "2026-08", "2026-09", "2026-10", "2026-11", "2026-12", "2027-01", "2027-02", "2027-03", "2027-04", "2027-05", "2027-06", "2027-07", "2027-08", "2027-09", "2027-10", "2027-11", "2027-12", "2028-01", "2028-02", "2028-03", "2028-04", "2028-05", "2028-06"], "values": [49192748, 49722748, 50252748, 18782748, 19312748, 19842748, 28372748, 28902748, 29432748, 29962748, 30492748, 31522748, 32552748, 33582748, 34612748, 35642748, 36672748, 37702748, 38732748, 39762748, 40792748, 41822748, 42852748, 43882748], "extras": [["순흐름 53만"], ["순흐름 53만"], ["순흐름 53만"], ["순흐름 -3,147만"], ["순흐름 53만"], ["순흐름 53만"], ["순흐름 853만"], ["순흐름 53만"], ["순흐름 53만"], ["순흐름 53만"], ["순흐름 53만"], ["순흐름 103만"], ["순흐름 103만"], ["순흐름 103만"], ["순흐름 103만"], ["순흐름 103만"], ["순흐름 103만"], ["순흐름 103만"], ["순흐름 103만"], ["순흐름 103만"], ["순흐름 103만"], ["순흐름 103만"], ["순흐름 103만"], ["순흐름 103만"]]}</script>
+</figure>
+
+<figure class="chart">
+  <figcaption>월별 순현금흐름 <span class="sub">수입 − 지출, 만원</span></figcaption>
+  <div class="plot"></div>
+  <script type="application/json">{"type": "bar", "labels": ["2026-07", "2026-08", "2026-09", "2026-10", "2026-11", "2026-12", "2027-01", "2027-02", "2027-03", "2027-04", "2027-05", "2027-06", "2027-07", "2027-08", "2027-09", "2027-10", "2027-11", "2027-12", "2028-01", "2028-02", "2028-03", "2028-04", "2028-05", "2028-06"], "values": [530000, 530000, 530000, -31470000, 530000, 530000, 8530000, 530000, 530000, 530000, 530000, 1030000, 1030000, 1030000, 1030000, 1030000, 1030000, 1030000, 1030000, 1030000, 1030000, 1030000, 1030000, 1030000], "extras": [["수입 480만", "지출 -427만"], ["수입 480만", "지출 -427만"], ["수입 480만", "지출 -427만"], ["수입 480만", "지출 -3,627만"], ["수입 480만", "지출 -427만"], ["수입 480만", "지출 -427만"], ["수입 1,280만", "지출 -427만"], ["수입 480만", "지출 -427만"], ["수입 480만", "지출 -427만"], ["수입 480만", "지출 -427만"], ["수입 480만", "지출 -427만"], ["수입 480만", "지출 -377만"], ["수입 480만", "지출 -377만"], ["수입 480만", "지출 -377만"], ["수입 480만", "지출 -377만"], ["수입 480만", "지출 -377만"], ["수입 480만", "지출 -377만"], ["수입 480만", "지출 -377만"], ["수입 480만", "지출 -377만"], ["수입 480만", "지출 -377만"], ["수입 480만", "지출 -377만"], ["수입 480만", "지출 -377만"], ["수입 480만", "지출 -377만"], ["수입 480만", "지출 -377만"]]}</script>
+</figure>
+
+<h2>월별 내역</h2>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>월</th><th class="num">수입</th><th class="num">지출</th>
+        <th class="num">순흐름</th><th class="num">월말 잔고</th><th>적용된 흐름</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td>2026-07</td>
+        <td class="num">480만</td>
+        <td class="num">-427만</td>
+        <td class="num pos">53만</td>
+        <td class="num ">4,919만</td>
+        <td class="detail" style="text-align:left">월급,적금 납입,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2026-08</td>
+        <td class="num">480만</td>
+        <td class="num">-427만</td>
+        <td class="num pos">53만</td>
+        <td class="num ">4,972만</td>
+        <td class="detail" style="text-align:left">월급,적금 납입,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2026-09</td>
+        <td class="num">480만</td>
+        <td class="num">-427만</td>
+        <td class="num pos">53만</td>
+        <td class="num ">5,025만</td>
+        <td class="detail" style="text-align:left">월급,적금 납입,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2026-10</td>
+        <td class="num">480만</td>
+        <td class="num">-3,627만</td>
+        <td class="num neg-text">-3,147만</td>
+        <td class="num ">1,878만</td>
+        <td class="detail" style="text-align:left">월급,적금 납입,주담대 원리금,생활비,자동차 구매</td>
+      </tr>
+      
+      <tr>
+        <td>2026-11</td>
+        <td class="num">480만</td>
+        <td class="num">-427만</td>
+        <td class="num pos">53만</td>
+        <td class="num ">1,931만</td>
+        <td class="detail" style="text-align:left">월급,적금 납입,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2026-12</td>
+        <td class="num">480만</td>
+        <td class="num">-427만</td>
+        <td class="num pos">53만</td>
+        <td class="num ">1,984만</td>
+        <td class="detail" style="text-align:left">월급,적금 납입,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2027-01</td>
+        <td class="num">1,280만</td>
+        <td class="num">-427만</td>
+        <td class="num pos">853만</td>
+        <td class="num ">2,837만</td>
+        <td class="detail" style="text-align:left">성과급,월급,적금 납입,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2027-02</td>
+        <td class="num">480만</td>
+        <td class="num">-427만</td>
+        <td class="num pos">53만</td>
+        <td class="num ">2,890만</td>
+        <td class="detail" style="text-align:left">월급,적금 납입,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2027-03</td>
+        <td class="num">480만</td>
+        <td class="num">-427만</td>
+        <td class="num pos">53만</td>
+        <td class="num ">2,943만</td>
+        <td class="detail" style="text-align:left">월급,적금 납입,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2027-04</td>
+        <td class="num">480만</td>
+        <td class="num">-427만</td>
+        <td class="num pos">53만</td>
+        <td class="num ">2,996만</td>
+        <td class="detail" style="text-align:left">월급,적금 납입,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2027-05</td>
+        <td class="num">480만</td>
+        <td class="num">-427만</td>
+        <td class="num pos">53만</td>
+        <td class="num ">3,049만</td>
+        <td class="detail" style="text-align:left">월급,적금 납입,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2027-06</td>
+        <td class="num">480만</td>
+        <td class="num">-377만</td>
+        <td class="num pos">103만</td>
+        <td class="num ">3,152만</td>
+        <td class="detail" style="text-align:left">월급,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2027-07</td>
+        <td class="num">480만</td>
+        <td class="num">-377만</td>
+        <td class="num pos">103만</td>
+        <td class="num ">3,255만</td>
+        <td class="detail" style="text-align:left">월급,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2027-08</td>
+        <td class="num">480만</td>
+        <td class="num">-377만</td>
+        <td class="num pos">103만</td>
+        <td class="num ">3,358만</td>
+        <td class="detail" style="text-align:left">월급,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2027-09</td>
+        <td class="num">480만</td>
+        <td class="num">-377만</td>
+        <td class="num pos">103만</td>
+        <td class="num ">3,461만</td>
+        <td class="detail" style="text-align:left">월급,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2027-10</td>
+        <td class="num">480만</td>
+        <td class="num">-377만</td>
+        <td class="num pos">103만</td>
+        <td class="num ">3,564만</td>
+        <td class="detail" style="text-align:left">월급,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2027-11</td>
+        <td class="num">480만</td>
+        <td class="num">-377만</td>
+        <td class="num pos">103만</td>
+        <td class="num ">3,667만</td>
+        <td class="detail" style="text-align:left">월급,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2027-12</td>
+        <td class="num">480만</td>
+        <td class="num">-377만</td>
+        <td class="num pos">103만</td>
+        <td class="num ">3,770만</td>
+        <td class="detail" style="text-align:left">월급,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2028-01</td>
+        <td class="num">480만</td>
+        <td class="num">-377만</td>
+        <td class="num pos">103만</td>
+        <td class="num ">3,873만</td>
+        <td class="detail" style="text-align:left">월급,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2028-02</td>
+        <td class="num">480만</td>
+        <td class="num">-377만</td>
+        <td class="num pos">103만</td>
+        <td class="num ">3,976만</td>
+        <td class="detail" style="text-align:left">월급,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2028-03</td>
+        <td class="num">480만</td>
+        <td class="num">-377만</td>
+        <td class="num pos">103만</td>
+        <td class="num ">4,079만</td>
+        <td class="detail" style="text-align:left">월급,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2028-04</td>
+        <td class="num">480만</td>
+        <td class="num">-377만</td>
+        <td class="num pos">103만</td>
+        <td class="num ">4,182만</td>
+        <td class="detail" style="text-align:left">월급,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2028-05</td>
+        <td class="num">480만</td>
+        <td class="num">-377만</td>
+        <td class="num pos">103만</td>
+        <td class="num ">4,285만</td>
+        <td class="detail" style="text-align:left">월급,주담대 원리금,생활비</td>
+      </tr>
+      
+      <tr>
+        <td>2028-06</td>
+        <td class="num">480만</td>
+        <td class="num">-377만</td>
+        <td class="num pos">103만</td>
+        <td class="num ">4,388만</td>
+        <td class="detail" style="text-align:left">월급,주담대 원리금,생활비</td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+
+<h2>실제 vs 예상 <span class="sub">기타(미등록) 현금흐름 추정</span></h2>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>기간</th><th class="num">실제 변화</th>
+        <th class="num">등록된 흐름</th><th class="num">기타</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td>2025-08</td>
+        <td class="num pos">34만</td>
+        <td class="num pos">53만</td>
+        <td class="num neg-text"><strong>-19만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2025-09</td>
+        <td class="num pos">81만</td>
+        <td class="num pos">53만</td>
+        <td class="num pos"><strong>28만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2025-10</td>
+        <td class="num pos">60만</td>
+        <td class="num pos">53만</td>
+        <td class="num pos"><strong>7만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2025-11</td>
+        <td class="num pos">38만</td>
+        <td class="num pos">53만</td>
+        <td class="num neg-text"><strong>-15만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2025-12</td>
+        <td class="num pos">53만</td>
+        <td class="num pos">53만</td>
+        <td class="num pos"><strong>0</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2026-01</td>
+        <td class="num pos">30만</td>
+        <td class="num pos">53만</td>
+        <td class="num neg-text"><strong>-23만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2026-02</td>
+        <td class="num pos">70만</td>
+        <td class="num pos">53만</td>
+        <td class="num pos"><strong>17만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2026-03</td>
+        <td class="num pos">76만</td>
+        <td class="num pos">53만</td>
+        <td class="num pos"><strong>23만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2026-04</td>
+        <td class="num pos">33만</td>
+        <td class="num pos">53만</td>
+        <td class="num neg-text"><strong>-20만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2026-05</td>
+        <td class="num pos">39만</td>
+        <td class="num pos">53만</td>
+        <td class="num neg-text"><strong>-14만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2026-06</td>
+        <td class="num pos">52만</td>
+        <td class="num pos">53만</td>
+        <td class="num neg-text"><strong>-1만</strong></td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+<p class="muted">기타 = 실제 변화 − 등록된 흐름. 음수면 등록하지 않은 지출이 그만큼 더 있었다는 뜻입니다.</p>
+
+
+
+</main>
+<script src="static/chart.js"></script>
+
+<script>
+(function () {
+  function flash() {
+    var b = document.querySelector('.demo-banner');
+    if (!b) return;
+    b.classList.remove('flash');
+    void b.offsetWidth;
+    b.classList.add('flash');
+    b.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  document.addEventListener('submit', function (e) { e.preventDefault(); flash(); }, true);
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href="#inert"]');
+    if (a) { e.preventDefault(); flash(); }
+  });
+})();
+</script>
+</body>
+</html>

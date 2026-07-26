@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>순자산 · asset-flow</title>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <span class="brand">asset-flow</span>
+    
+    <a href="index.html" class="">현금흐름</a>
+    <a href="networth.html" class="active">순자산</a>
+    <a href="flows.html" class="">흐름 관리</a>
+    <a href="snapshots.html" class="">스냅샷</a>
+    <a href="accounts.html" class="">계정</a>
+  </nav>
+</header>
+<main>
+  <div class="demo-banner"><strong>정적 데모</strong> — 포트폴리오용으로 캡처한 스냅샷입니다. 숫자는 모두 가상이며, 서버가 없어 입력·수정은 동작하지 않습니다.<span class="en-note">Static snapshot for portfolio purposes. All figures are fictitious; forms are inert without a backend.</span></div>
+  
+  
+<h1>순자산 추이</h1>
+
+
+
+<figure class="chart">
+  <figcaption>순자산 <span class="sub">자산 − 대출, 스냅샷 기준. 누락 계정은 직전 값 이월</span></figcaption>
+  <div class="plot"></div>
+  <script type="application/json">{"type": "line", "labels": ["2025-08-05", "2025-09-05", "2025-10-05", "2025-11-05", "2025-12-05", "2026-01-05", "2026-02-05", "2026-03-05", "2026-04-05", "2026-05-05", "2026-06-05", "2026-07-05"], "values": [442000000, 444569230, 447686088, 448602740, 452463015, 452925598, 456399552, 460228067, 464668659, 467708547, 472828667, 476381380], "extras": [[], [], [], [], [], [], [], [], [], [], [], []]}</script>
+</figure>
+
+<h2>스냅샷 기록</h2>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>날짜</th>
+        
+        <th class="num">CMA</th>
+        
+        <th class="num">주거래 예금</th>
+        
+        <th class="num">증권계좌</th>
+        
+        <th class="num">주택담보대출 <span class="muted">(대출)</span></th>
+        
+        <th class="num">아파트</th>
+        
+        <th class="num">순자산</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td>2026-07-05</td>
+        
+        
+        <td class="num ">1,321만</td>
+        
+        
+        <td class="num ">3,545만</td>
+        
+        
+        <td class="num ">6,690만</td>
+        
+        
+        <td class="num ">-2억 6,118만</td>
+        
+        
+        <td class="num ">6억 2,200만</td>
+        
+        <td class="num"><strong>4억 7,638만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2026-06-05</td>
+        
+        
+        <td class="num ">1,310만</td>
+        
+        
+        <td class="num ">3,504만</td>
+        
+        
+        <td class="num ">6,449만</td>
+        
+        
+        <td class="num ">-2억 6,180만</td>
+        
+        
+        <td class="num ">6억 2,200만</td>
+        
+        <td class="num"><strong>4억 7,283만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2026-05-05</td>
+        
+        
+        <td class="num ">1,297만</td>
+        
+        
+        <td class="num ">3,478만</td>
+        
+        
+        <td class="num ">6,538만</td>
+        
+        
+        <td class="num ">-2억 6,242만</td>
+        
+        
+        <td class="num ">6억 1,700만</td>
+        
+        <td class="num"><strong>4억 6,771만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2026-04-05</td>
+        
+        
+        <td class="num ">1,287만</td>
+        
+        
+        <td class="num ">3,454만</td>
+        
+        
+        <td class="num ">6,329만</td>
+        
+        
+        <td class="num ">-2억 6,304만</td>
+        
+        
+        <td class="num ">6억 1,700만</td>
+        
+        <td class="num"><strong>4억 6,467만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2026-03-05</td>
+        
+        
+        <td class="num ">1,275만</td>
+        
+        
+        <td class="num ">3,390만</td>
+        
+        
+        <td class="num ">6,024만</td>
+        
+        
+        <td class="num ">-2억 6,366만</td>
+        
+        
+        <td class="num ">6억 1,700만</td>
+        
+        <td class="num"><strong>4억 6,023만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2026-02-05</td>
+        
+        
+        <td class="num ">1,269만</td>
+        
+        
+        <td class="num ">3,327만</td>
+        
+        
+        <td class="num ">5,773만</td>
+        
+        
+        <td class="num ">-2억 6,428만</td>
+        
+        
+        <td class="num ">6억 1,700만</td>
+        
+        <td class="num"><strong>4억 5,640만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2026-01-05</td>
+        
+        
+        <td class="num ">1,262만</td>
+        
+        
+        <td class="num ">3,304만</td>
+        
+        
+        <td class="num ">5,517만</td>
+        
+        
+        <td class="num ">-2억 6,490만</td>
+        
+        
+        <td class="num ">6억 1,700만</td>
+        
+        <td class="num"><strong>4억 5,293만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2025-12-05</td>
+        
+        
+        <td class="num ">1,245만</td>
+        
+        
+        <td class="num ">3,268만</td>
+        
+        
+        <td class="num ">5,586만</td>
+        
+        
+        <td class="num ">-2억 6,552만</td>
+        
+        
+        <td class="num ">6억 1,700만</td>
+        
+        <td class="num"><strong>4억 5,246만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2025-11-05</td>
+        
+        
+        <td class="num ">1,241만</td>
+        
+        
+        <td class="num ">3,234만</td>
+        
+        
+        <td class="num ">5,300만</td>
+        
+        
+        <td class="num ">-2억 6,614만</td>
+        
+        
+        <td class="num ">6억 1,700만</td>
+        
+        <td class="num"><strong>4억 4,860만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2025-10-05</td>
+        
+        
+        <td class="num ">1,232만</td>
+        
+        
+        <td class="num ">3,183만</td>
+        
+        
+        <td class="num ">5,030만</td>
+        
+        
+        <td class="num ">-2억 6,676만</td>
+        
+        
+        <td class="num ">6억 2,000만</td>
+        
+        <td class="num"><strong>4억 4,769만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2025-09-05</td>
+        
+        
+        <td class="num ">1,213만</td>
+        
+        
+        <td class="num ">3,120만</td>
+        
+        
+        <td class="num ">4,861만</td>
+        
+        
+        <td class="num ">-2억 6,738만</td>
+        
+        
+        <td class="num ">6억 2,000만</td>
+        
+        <td class="num"><strong>4억 4,457만</strong></td>
+      </tr>
+      
+      <tr>
+        <td>2025-08-05</td>
+        
+        
+        <td class="num ">1,200만</td>
+        
+        
+        <td class="num ">3,100만</td>
+        
+        
+        <td class="num ">4,700만</td>
+        
+        
+        <td class="num ">-2억 6,800만</td>
+        
+        
+        <td class="num ">6억 2,000만</td>
+        
+        <td class="num"><strong>4억 4,200만</strong></td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+<p class="muted">·&nbsp;표시는 그 날짜에 스냅샷이 없는 계정입니다 (순자산 합계에는 직전 값이 이월 반영).</p>
+
+
+</main>
+<script src="static/chart.js"></script>
+
+<script>
+(function () {
+  function flash() {
+    var b = document.querySelector('.demo-banner');
+    if (!b) return;
+    b.classList.remove('flash');
+    void b.offsetWidth;
+    b.classList.add('flash');
+    b.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  document.addEventListener('submit', function (e) { e.preventDefault(); flash(); }, true);
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href="#inert"]');
+    if (a) { e.preventDefault(); flash(); }
+  });
+})();
+</script>
+</body>
+</html>

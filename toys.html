@@ -63,13 +63,14 @@
         </p>
         <p class="tags"><span>Finance</span><span>Simulation</span><span>Vanilla JS</span><span>SVG</span></p>
         <!--
-          라이브 데모 버튼은 뺀 상태. mock_real_estate 저장소가 private 이라
-          https://sslee0000.github.io/mock_real_estate/ 가 404 임.
-          저장소를 public 으로 바꾸고 Settings > Pages 를 켠 뒤 아래 주석을 풀면 됨.
-        <a class="btn card-cta" href="https://sslee0000.github.io/mock_real_estate/" target="_blank" rel="noopener">
+          소스 저장소(mock_real_estate)가 private 이라 그쪽 Pages 는 쓸 수 없다.
+          대신 결과물 index.html 을 이 repo 의 demos/lease-vs-buy/ 로 복사해 서빙한다.
+          시뮬레이터를 고쳤으면 mock_real_estate 에서 ./sync_to_homepage.sh 를 돌려야
+          아래 데모에 반영된다.
+        -->
+        <a class="btn card-cta" href="demos/lease-vs-buy/" target="_blank" rel="noopener">
           <span class="ko">라이브 데모 →</span><span class="en">Live demo →</span>
         </a>
-        -->
       </article>
 
       <article class="card">
@@ -84,6 +85,26 @@
           <a href="https://github.com/sslee0000/findata" target="_blank" rel="noopener"><span class="ko">소스 코드</span><span class="en">Source code</span></a>
         </p>
         <p class="tags"><span>Python</span><span>FastAPI</span><span>Reverse Engineering</span><span>Self-hosted</span></p>
+      </article>
+
+      <article class="card">
+        <p class="card-meta mono">Personal Project · 2026</p>
+        <h3><span class="ko">asset-flow — 자산·현금흐름 트래커</span><span class="en">asset-flow — Asset &amp; Cash-Flow Tracker</span></h3>
+        <p>
+          <span class="ko">가계부의 기록 부담 없이 순자산과 향후 현금 잔고를 추적하는 도구. 영수증 단위 지출 대신 <em>계정 스냅샷</em>과 <em>"t개월간 월 x원"</em> 형태의 반복 현금흐름만 기록하는 모델로, 입력 비용을 최소화했습니다. 실제 잔고 변화와 등록된 흐름의 차이를 자동으로 대조해 미등록 지출을 추정하므로, 잔 지출을 적지 않아도 추정치가 현실과 어긋나지 않습니다. 보유 종목은 yfinance 시세로 자동 평가(외화는 환율 환산)하고, 차트는 의존성 없이 SVG로 직접 그렸습니다.</span>
+          <span class="en">A net-worth and cash-flow tracker that skips the bookkeeping burden of a ledger. Instead of itemising receipts it records only <em>account snapshots</em> and recurring flows of the form <em>"x per month for t months"</em>, keeping data entry near zero. A reconciliation pass compares actual balance changes against registered flows to estimate unlogged spending, so the projection stays honest without itemising anything. Holdings are priced automatically via yfinance with FX conversion, and every chart is hand-rolled SVG with no dependencies.</span>
+        </p>
+        <p class="tags"><span>Python</span><span>FastAPI</span><span>SQLite</span><span>SVG</span><span>Personal Finance</span></p>
+        <!--
+          소스 저장소(asset-flow)가 private 이라 그쪽 Pages 는 쓸 수 없다.
+          서버 렌더링 앱이라 HTML 한 장 복사로는 안 되고, asset-flow 에서
+          ./make_demo_snapshot.py 를 돌리면 가짜 데모 DB 로 앱을 띄워 각 페이지를
+          크롤링해 demos/asset-flow/ 를 통째로 다시 만든다. 실제 재무 데이터는
+          절대 들어가지 않는다. 앱을 고쳤으면 그 스크립트를 다시 돌릴 것.
+        -->
+        <a class="btn card-cta" href="demos/asset-flow/" target="_blank" rel="noopener">
+          <span class="ko">데모 →</span><span class="en">Demo →</span>
+        </a>
       </article>
 
     </div>
