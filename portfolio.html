@@ -73,12 +73,16 @@
           <svg viewBox="0 0 24 24" width="26" height="26"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M3 17h2m0 0a2.5 2.5 0 1 0 5 0m-5 0a2.5 2.5 0 1 1 5 0m0 0h4m0 0a2.5 2.5 0 1 0 5 0m-5 0a2.5 2.5 0 1 1 5 0m2 0h1v-4l-3-5H6L3 13v4z"/><circle cx="12" cy="7" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
         </div>
         <p class="card-meta mono">Naver Labs · 2024 –</p>
-        <h3><span class="ko">거리뷰 데이터 수집 차량 플랫폼</span><span class="en">Street-View Mapping Vehicle Platform</span></h3>
+        <h3><span class="ko">P1 거리뷰 매핑 차량 플랫폼</span><span class="en">P1 Street View Mapping Vehicle Platform</span></h3>
         <p>
-          <span class="ko">표준 Ubuntu로 돌던 차량을 커스텀 Yocto OS(read-only rootfs, A/B 이중화)로 전환. 차량 제어 상태기계 재설계로 초기화 시간 약 44% 단축, 실차 검증으로 서비스 수준 완성.</span>
-          <span class="en">Moved the vehicle from stock Ubuntu to a custom Yocto OS (read-only rootfs, A/B redundancy). State-machine redesign cut startup ~44%; hardened to service level through on-vehicle validation.</span>
+          <span class="ko">표준 Ubuntu로 돌던 차량을 커스텀 Yocto OS(read-only rootfs, A/B 이중화)로 전환. 차량 제어 상태기계 재설계로 초기화 시간 약 44% 단축. 촬영 장비 제어 소프트웨어의 예외처리를 체계화하고 형식·주기가 다른 이종 센서(카메라·LiDAR·GPS) 간 시간 동기화 안정성을 확보해 데이터 수집 신뢰성을 높였고, 실차 검증으로 서비스 수준 완성.</span>
+          <span class="en">Moved the vehicle from stock Ubuntu to a custom Yocto OS (read-only rootfs, A/B redundancy). State-machine redesign cut startup ~44%. Hardened capture-device control with systematic exception handling and stabilized time synchronization across heterogeneous sensors (camera, LiDAR, GPS), making data collection dependable; brought to service level through on-vehicle validation.</span>
         </p>
-        <p class="tags"><span>Yocto</span><span>A/B OTA</span><span>State Machine</span><span>Embedded Linux</span></p>
+        <p class="card-links">
+          <a href="https://naverlabs.com/blogDetail?seq=34023" target="_blank" rel="noopener"><span class="ko">공식 소개</span><span class="en">Official page</span></a>
+          <a href="https://map.naver.com/p/search/1784?c=17.00,0,0,0,adh&amp;p=z4_wuH3dyM1lptFFp1oGdg,-81.48,-5.63,80,Float" target="_blank" rel="noopener"><span class="ko">네이버 지도에서 결과 보기</span><span class="en">See the result live</span></a>
+        </p>
+        <p class="tags"><span>Yocto</span><span>A/B OTA</span><span>State Machine</span><span>Sensor Sync</span><span>Embedded Linux</span></p>
       </article>
 
       <article class="card">
@@ -86,10 +90,13 @@
           <svg viewBox="0 0 24 24" width="26" height="26"><rect x="4" y="5" width="16" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 19h8M12 15v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8 9.5h4M8 12h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         </div>
         <p class="card-meta mono">Naver Labs · 2022 – 2025</p>
-        <h3><span class="ko">자율주행 셔틀 시스템 소프트웨어</span><span class="en">Autonomous Shuttle System Software</span></h3>
+        <h3><span class="ko">ALT-B 자율주행 셔틀</span><span class="en">ALT-B Autonomous Shuttle</span></h3>
         <p>
-          <span class="ko">실서비스 중인 자율주행 셔틀의 차량 제어·센서·UI 디바이스 드라이버 개발, 차량 내 네트워크 설계, 월 단위 정기 릴리스 운영.</span>
-          <span class="en">Vehicle control, sensor, and UI device drivers for a shuttle in daily service — plus in-vehicle network design and a monthly release train.</span>
+          <span class="ko">실서비스 중인 자율주행 셔틀의 차량 제어·센서·UI 디바이스 드라이버 개발, 차량 내 네트워크 설계, 월 단위 정기 릴리스 운영. 현장 장애는 스토리지·네트워크·애플리케이션 계층까지 파고들어 근본원인 분석.</span>
+          <span class="en">Vehicle control, sensor, and UI device drivers for a shuttle in daily service — plus in-vehicle network design and a monthly release train. Traced field failures to root cause across storage, network, and application layers.</span>
+        </p>
+        <p class="card-links">
+          <a href="https://naverlabs.com/blogDetail?seq=33990" target="_blank" rel="noopener"><span class="ko">공식 소개</span><span class="en">Official page</span></a>
         </p>
         <p class="tags"><span>Device Drivers</span><span>CAN</span><span>Networking</span><span>Release Eng.</span></p>
       </article>

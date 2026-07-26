@@ -85,16 +85,20 @@
         <li>
           <div class="cv-main">
             <h3><span class="ko">네이버랩스</span><span class="en">Naver Labs</span></h3>
-            <p class="cv-sub"><span class="ko">소프트웨어 엔지니어</span><span class="en">Software Engineer</span></p>
+            <p class="cv-sub"><span class="ko">시스템 소프트웨어 엔지니어</span><span class="en">System Software Engineer</span></p>
             <ul class="cv-bullets ko">
-              <li>자율주행 셔틀·거리뷰 데이터 수집 차량의 시스템 소프트웨어 개발 — 디바이스 드라이버, 차량 내 네트워크, 릴리스 관리, 장애 근본원인 분석</li>
-              <li>거리뷰 차량을 표준 Ubuntu에서 커스텀 Yocto OS(read-only rootfs, A/B 이중화)로 전환하고 시스템 계층을 리팩터링, 상태기계 재설계로 초기화 시간 약 44% 단축</li>
-              <li>배달 로봇 등 타 프로젝트용 멀티보드(NVIDIA Orin 등) Yocto OS 구축 및 카메라 드라이버 이식</li>
+              <li><a href="https://naverlabs.com/blogDetail?seq=34023" target="_blank" rel="noopener">P1</a> 거리뷰 매핑 차량을 표준 Ubuntu에서 커스텀 Yocto OS(read-only rootfs, A/B 이중화)로 전환하고 시스템 계층을 리팩터링, 상태기계 재설계로 초기화 시간 약 44% 단축</li>
+              <li>촬영 장비 제어 소프트웨어의 예외처리를 체계화하고, 형식·주기가 다른 이종 센서(카메라·LiDAR·GPS) 간 시간 동기화 안정성 확보 — 데이터 수집 신뢰성 향상</li>
+              <li><a href="https://naverlabs.com/blogDetail?seq=33990" target="_blank" rel="noopener">ALT-B</a> 자율주행 셔틀의 디바이스 드라이버·차량 내 네트워크 개발, 현장 장애를 스토리지·네트워크·애플리케이션 계층까지 근본원인 분석</li>
+              <li>팀 릴리스 프로세스(버저닝·브랜치 전략) 정립 및 정기 릴리스 운영</li>
+              <li>로봇 프로젝트용 멀티보드(NVIDIA Orin 등) Yocto OS 구축 및 커널 레벨 주변장치 드라이버 이식</li>
             </ul>
             <ul class="cv-bullets en">
-              <li>System software for an autonomous shuttle and a street-view mapping vehicle — device drivers, in-vehicle networking, release engineering, field root-cause analysis</li>
-              <li>Migrated the mapping vehicle from stock Ubuntu to a custom Yocto OS (read-only rootfs, A/B redundancy) with system-layer refactoring; state-machine redesign cut startup time by ~44%</li>
-              <li>Built Yocto OS images for multiple boards (e.g., NVIDIA Orin) and ported kernel-level camera drivers for robot projects</li>
+              <li>Migrated the <a href="https://naverlabs.com/blogDetail?seq=34023" target="_blank" rel="noopener">P1</a> street-view mapping vehicle from stock Ubuntu to a custom Yocto OS (read-only rootfs, A/B redundancy) with system-layer refactoring; state-machine redesign cut startup time by ~44%</li>
+              <li>Hardened capture-device control software with systematic exception handling and stabilized time synchronization across heterogeneous sensors (camera, LiDAR, GPS) — improving data-collection reliability</li>
+              <li>Device drivers and in-vehicle networking for the <a href="https://naverlabs.com/blogDetail?seq=33990" target="_blank" rel="noopener">ALT-B</a> autonomous shuttle; root-cause analysis of field failures across storage, network, and application layers</li>
+              <li>Formalized the team's release process (versioning and branching strategy) and operated regular releases</li>
+              <li>Built Yocto OS images for multiple boards (e.g., NVIDIA Orin) and ported vendor peripheral drivers at the kernel level</li>
             </ul>
           </div>
           <span class="cv-date mono">2022.04 –<span class="ko"> 현재</span><span class="en"> Present</span></span>
@@ -163,7 +167,8 @@
         <div class="skill-row"><span class="skill-cat mono"><span class="ko">언어</span><span class="en">languages</span></span><p><span>C/C++</span><span>Python</span><span>Shell</span></p></div>
         <div class="skill-row"><span class="skill-cat mono"><span class="ko">시스템</span><span class="en">systems</span></span><p><span>Linux</span><span>Yocto</span><span>Docker</span><span>ROS / Autoware</span><span>PREEMPT_RT</span><span>A/B OTA</span></p></div>
         <div class="skill-row"><span class="skill-cat mono"><span class="ko">프로파일링</span><span class="en">profiling</span></span><p><span>perf</span><span>ftrace</span><span>kernelshark</span><span>Wireshark</span><span>rtla / cyclictest</span></p></div>
-        <div class="skill-row"><span class="skill-cat mono"><span class="ko">워크플로</span><span class="en">workflow</span></span><p><span>Git</span><span>Jenkins</span><span>Gerrit</span><span>LaTeX</span><span class="ko">AI 활용 개발</span><span class="en">AI-assisted development</span></p></div>
+        <div class="skill-row"><span class="skill-cat mono"><span class="ko">워크플로</span><span class="en">workflow</span></span><p><span>Git</span><span>Jenkins</span><span>Gerrit</span><span>LaTeX</span></p></div>
+        <div class="skill-row"><span class="skill-cat mono"><span class="ko">AI 활용 개발</span><span class="en">AI-assisted dev</span></span><p><span>Claude Code</span><span>OpenAI Codex</span><span class="ko">스펙·테스트 기반 프롬프팅</span><span class="en">spec / test-driven prompting</span><span class="ko">생성 코드 리뷰</span><span class="en">review of generated code</span></p></div>
       </div>
     </section>
 

@@ -239,6 +239,12 @@ html:not([data-lang="en"]) .en { display: none !important; }
 .card:has(.card-cta) > p.tags { flex: initial; }
 .card:has(.card-cta) > p:nth-last-child(3) { flex: 1; }
 .card-cta { align-self: flex-start; margin-top: 4px; padding: 8px 15px; font-size: 0.88rem; }
+/* card with external reference links: description grows, links + tags stay compact */
+.card:has(.card-links) > p:nth-last-child(3) { flex: 1; }
+.card:has(.card-links) > p.card-links { flex: initial; }
+.card-links { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.86rem; }
+.card-links a { color: var(--accent); }
+.card-links a::before { content: "↗"; margin-right: 4px; }
 .tags { display: flex; flex-wrap: wrap; gap: 7px; }
 .tags span {
   font-family: ui-monospace, monospace; font-size: 0.75rem;
