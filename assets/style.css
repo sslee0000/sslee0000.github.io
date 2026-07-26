@@ -167,6 +167,8 @@ html:not([data-lang="en"]) .en { display: none !important; }
 /* ---------- Landing entry cards ---------- */
 .section-entry { padding: 12px 0 84px; }
 .entry-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+/* single entry card used as a section footer (e.g. Portfolio -> Toy Projects) */
+.entry-cards-single { grid-template-columns: 1fr; margin-top: 32px; }
 .entry-card {
   position: relative;
   display: flex; flex-direction: column; gap: 10px;
@@ -202,6 +204,9 @@ html:not([data-lang="en"]) .en { display: none !important; }
 }
 .page-head h1 { font-size: 2.1rem; letter-spacing: -0.02em; }
 .page-note { color: var(--muted); font-size: 0.95rem; margin-bottom: 44px; }
+.breadcrumb { font-size: 0.85rem; margin-bottom: 14px; }
+.breadcrumb a { color: var(--muted); }
+.breadcrumb a:hover { color: var(--accent); text-decoration: none; }
 
 /* ---------- CV fact lists ---------- */
 .cv-section { margin-bottom: 52px; }
