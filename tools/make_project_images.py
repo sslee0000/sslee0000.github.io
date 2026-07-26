@@ -20,7 +20,26 @@ FILES = [
 FULL_MAX_W = 1600   # 클릭했을 때 보는 크기
 THUMB_BOX = (760, 760)
 
+# 프로필 아바타: 세로형 원본을 정사각형으로 크롭. TOP 을 키우면 얼굴이 위로 올라감.
+PROFILE_SRC = "images/profile.jpg"
+PROFILE_OUT = "images/profile-avatar.jpg"
+PROFILE_TOP = 30
+
+# P1 / ALT-B 카드 사진은 네이버랩스 공식 블로그에서 가져온 것이라 원본을 저장소에 두지 않는다.
+# 다시 받아야 하면 아래 API 로 이미지 URL 을 확인할 수 있다:
+#   https://www.naverlabs.com/api/article/naver-labs/blog/ko/34023   (P1)
+#   https://www.naverlabs.com/api/article/naver-labs/blog/ko/33990   (ALT-B)
+# 현재 쓰는 것: 49_01.jpg -> p1-vehicle, 71_02.jpg -> alt-b-shuttle
+
 os.makedirs("images/projects", exist_ok=True)
+
+if os.path.exists(PROFILE_SRC):
+    im = Image.open(PROFILE_SRC).convert("RGB")
+    side = min(im.size)
+    im.crop((0, PROFILE_TOP, side, PROFILE_TOP + side)).resize((800, 800), Image.LANCZOS).save(
+        PROFILE_OUT, "JPEG", quality=88, optimize=True, progressive=True
+    )
+    print(f"profile: {im.size} -> 800x800 ({PROFILE_OUT})")
 
 for name in FILES:
     src = f"images/{name}.png"

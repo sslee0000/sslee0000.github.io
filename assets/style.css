@@ -249,6 +249,12 @@ html:not([data-lang="en"]) .en { display: none !important; }
 }
 .card-figure img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; display: block; }
 .card-figure:hover { border-color: var(--accent); }
+/* photographs fill the panel edge-to-edge instead of sitting on white */
+.card-figure-photo { background: var(--bg-elev); padding: 0; }
+.card-figure-photo img { width: 100%; height: 100%; max-width: none; max-height: none; object-fit: cover; }
+.figure-credit { color: var(--muted); font-size: 0.72rem; margin-top: -2px; }
+.figure-credit a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+.figure-credit a:hover { color: var(--accent); }
 .card-meta { color: var(--muted); font-size: 0.78rem; }
 .card h3 { font-size: 1.08rem; letter-spacing: -0.01em; }
 .card p { color: var(--text-soft); font-size: 0.94rem; }

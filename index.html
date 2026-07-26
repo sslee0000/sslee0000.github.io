@@ -48,33 +48,14 @@
   <!-- ================= Hero ================= -->
   <section class="hero hero-landing">
     <div class="container hero-grid">
-      <div class="avatar" aria-hidden="true">
+      <div class="avatar">
         <!--
-          자체 제작 아바타 SVG. "바이저 안에서 터미널 커서가 깜빡이는 작업용 로봇" —
-          실제 기계를 다루는 시스템 소프트웨어 엔지니어라는 정체성과 사이트의 터미널 모티프를 합친 것.
-          색은 CSS 변수를 그대로 쓰므로 다크/라이트 테마에 자동으로 맞춰짐.
-          되돌리려면 이 <svg> 블록을 <div class="avatar-fallback mono">~/</div> 로 교체.
-          사진으로 바꾸려면 <img src="images/profile.jpg" alt=""> 로 교체.
+          profile-avatar.jpg 는 원본 profile.jpg(472x591 세로형)를 얼굴이 살짝 위에 오도록
+          정사각형으로 잘라 800x800 으로 만든 것. 원본을 바꾸면 아래로 다시 생성:
+            python3 tools/make_project_images.py
+          로봇 SVG 아바타로 되돌리려면 git 히스토리의 커밋 575a278 참고.
         -->
-        <svg class="avatar-bot" viewBox="0 0 120 120">
-          <!-- 안테나 -->
-          <circle cx="60" cy="19" r="4" fill="currentColor"/>
-          <line x1="60" y1="23" x2="60" y2="33" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-          <!-- 머리 -->
-          <rect x="26" y="33" width="68" height="48" rx="13" fill="none" stroke="currentColor" stroke-width="3.5"/>
-          <!-- 바이저 -->
-          <rect x="35" y="43" width="50" height="26" rx="7" fill="currentColor" opacity="0.16"/>
-          <!-- 바이저 안: 셸 프롬프트와 깜빡이는 커서 -->
-          <path d="M47 51l6 5-6 5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <rect class="avatar-caret" x="60" y="49" width="13" height="14" rx="2" fill="currentColor"/>
-          <!-- 목 -->
-          <rect x="52" y="81" width="16" height="6" fill="currentColor"/>
-          <!-- 주행부 -->
-          <rect x="24" y="87" width="72" height="18" rx="8" fill="none" stroke="currentColor" stroke-width="3.5"/>
-          <circle cx="42" cy="96" r="3.5" fill="currentColor"/>
-          <circle cx="60" cy="96" r="3.5" fill="currentColor"/>
-          <circle cx="78" cy="96" r="3.5" fill="currentColor"/>
-        </svg>
+        <img src="images/profile-avatar.jpg" alt="Seungsu Lee" width="800" height="800">
       </div>
       <div>
         <p class="eyebrow mono">// system software engineer</p>
