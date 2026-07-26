@@ -135,6 +135,10 @@ html:not([data-lang="en"]) .en { display: none !important; }
 }
 .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .avatar-fallback { font-size: 3rem; color: var(--accent); }
+/* self-drawn robot avatar: inherits the accent color, so it follows the theme */
+.avatar-bot { width: 70%; height: 70%; color: var(--accent); display: block; }
+.avatar-caret { animation: caret-blink 1.15s steps(1, end) infinite; }
+@keyframes caret-blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0.15; } }
 
 .eyebrow { color: var(--accent); font-size: 0.95rem; margin-bottom: 12px; }
 .hero h1 {
@@ -310,6 +314,7 @@ html:not([data-lang="en"]) .en { display: none !important; }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .btn, .card, .entry-card { transition: none; }
+  .avatar-caret { animation: none; }
 }
 
 /* ---------- Responsive ---------- */
